@@ -1,8 +1,7 @@
 import {
   SHOW_MODAL,
   HIDE_MODAL,
-  SET_AJAX_PROCESSING,
-  RESET_FORM
+  SET_AJAX_PROCESSING
 } from '../constants/AppConstants'
 
 const initialState = {
@@ -28,13 +27,16 @@ export const commonReducer = (state = initialState, action) => {
       return hideModal(state, action)
     case SET_AJAX_PROCESSING:
       return setAjaxProcessing(state, action)
-    case RESET_FORM:
-      return resetForm(state)
     default:
       return state
   }
 }
 
+/**
+ * Show modal
+ * @param {*} state
+ * @param {*} action
+ */
 const showModal = (state, action) => {
   return {
     ...state,
@@ -44,6 +46,11 @@ const showModal = (state, action) => {
   }
 }
 
+/**
+ * Hide modal
+ * @param {*} state
+ * @param {*} action
+ */
 const hideModal = (state, action) => {
   return {
     ...state,
@@ -51,16 +58,14 @@ const hideModal = (state, action) => {
   }
 }
 
+/**
+ * Set state as ajax processing is ON/OFF
+ * @param {*} state
+ * @param {*} action
+ */
 const setAjaxProcessing = (state, action) => {
   return {
     ...state,
     ajaxProcessing: action.ajaxProcessing
-  }
-}
-
-const resetForm = state => {
-  return {
-    ...state,
-    address: initialState.address
   }
 }

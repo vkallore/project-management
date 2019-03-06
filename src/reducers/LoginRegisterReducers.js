@@ -16,11 +16,7 @@ const initialState = {
   }
 }
 
-export const loginRegisterReducer = (
-  state = initialState,
-  action,
-  formType = ''
-) => {
+export const loginRegisterReducer = (state = initialState, action) => {
   switch (action.type) {
     case RESET_FORM:
       return resetForm(state, action)

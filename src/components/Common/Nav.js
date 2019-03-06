@@ -10,10 +10,7 @@ class Nav extends React.Component {
         <div className="container">
           <div className="navbar-brand">
             <Link to="/" className="navbar-item">
-              <img
-                src={LOGO}
-                alt="Bulma: a modern CSS framework based on Flexbox"
-              />
+              <img src={LOGO} alt="FLIP - Project Management App" />
             </Link>
             <div className="navbar-burger burger" data-target="siteMainNav">
               <span />
@@ -23,10 +20,10 @@ class Nav extends React.Component {
           </div>
           <div id="siteMainNav" className="navbar-menu">
             <div className="navbar-start">
-              <Link className="navbar-item" to="/">
+              <Link className="navbar-item" to="/" title="Home">
                 Home
               </Link>
-              <Link className="navbar-item" to="/login">
+              <Link className="navbar-item" to="/login" title="Login">
                 Login
               </Link>
             </div>
