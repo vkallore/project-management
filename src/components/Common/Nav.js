@@ -2,43 +2,36 @@ import React from 'react'
 import Link from 'react-router-dom/Link'
 
 import { LOGO } from '../../constants/ImageAssets'
+import UserNavItems from './UserNavItems'
+import PublicNavItems from './PublicNavItems'
 
 class Nav extends React.Component {
   render() {
+    const { loggedIn } = this.props
     return (
-      <nav className="navbar is-fixed-top">
+      <nav
+        className="navbar is-fixed-top"
+        role="navigation"
+        aria-label="main navigation"
+      >
         <div className="container">
           <div className="navbar-brand">
             <Link to="/" className="navbar-item">
               <img src={LOGO} alt="FLIP - Project Management App" />
             </Link>
-            <div className="navbar-burger burger" data-target="siteMainNav">
+            <div
+              className="navbar-burger burger"
+              data-target="siteMainNav"
+              aria-label="menu"
+              aria-expanded="false"
+            >
               <span />
               <span />
               <span />
             </div>
           </div>
           <div id="siteMainNav" className="navbar-menu">
-            <div className="navbar-start">
-              <Link className="navbar-item" to="/" title="Home">
-                Home
-              </Link>
-              <Link className="navbar-item" to="/login" title="Login">
-                Login
-              </Link>
-            </div>
-            <div className="navbar-end">
-              <div className="navbar-item">
-                <div className="buttons">
-                  <Link
-                    className="navbar-item1 button is-primary"
-                    to="/register"
-                  >
-                    Create Account
-                  </Link>
-                </div>
-              </div>
-            </div>
+            {loggedIn ? <UserNavItems /> : <PublicNavItems />}
           </div>
         </div>
       </nav>
@@ -47,18 +40,27 @@ class Nav extends React.Component {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Add a click event on burger
-  const navBarBurger = document.querySelector('.navbar-burger')
-  if (navBarBurger === undefined || navBarBurger === null) return
-  navBarBurger.addEventListener('click', () => {
-    // Get the target from the "data-target" attribute
-    const target = navBarBurger.dataset.target
-    const $target = document.getElementById(target)
+  // Get all "navbar-burger" elements
+  const $navbarBurgers = Array.prototype.slice.call(
+    document.querySelectorAll('.navbar-burger'),
+    0
+  )
 
-    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-    navBarBurger.classList.toggle('is-active')
-    $target.classList.toggle('is-active')
-  })
+  // Check if there are any navbar burgers
+  if ($navbarBurgers.length > 0) {
+    // Add a click event on each of them
+    $navbarBurgers.forEach(el => {
+      el.addEventListener('click', () => {
+        // Get the target from the "data-target" attribute
+        const target = el.dataset.target
+        const $target = document.getElementById(target)
+
+        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+        el.classList.toggle('is-active')
+        $target.classList.toggle('is-active')
+      })
+    })
+  }
 })
 
 export default Nav

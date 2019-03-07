@@ -6,7 +6,10 @@ import {
   SET_AJAX_PROCESSING,
   RESET_FORM,
   CHANGE_LOGIN_REGISTER_FORM,
-  USER_TOKEN
+  USER_TOKEN,
+  USER_TOKEN_EXPIRY,
+  USER_REFRESH_TOKEN,
+  SET_LOGGED_IN
 } from '../constants/AppConstants'
 import { API_ERROR_404, API_COMMON_ERROR } from '../constants/AppMessage'
 
@@ -50,7 +53,8 @@ export const login = (username, password) => {
         const data = response.data
         /* Store the token in localstorage */
         if (data.token) {
-          setLocalStorage(USER_TOKEN, data.token)
+          dispatch(setLoggedIn(true))
+          setUserData(data.token, data.tokenExpiry, data.refreshToken)
         }
         /* Reset the form */
         dispatch({ type: RESET_FORM, formType: 'login' })
@@ -103,6 +107,32 @@ const setAjaxProcessing = ajaxProcessing => {
 }
 
 /**
+ * Set state as logged in TRUE/FALSE
+ * @param {*} loggedIn
+ */
+export const setLoggedIn = loggedIn => {
+  return { type: SET_LOGGED_IN, loggedIn }
+}
+
+export const logout = () => {
+  return dispatch => {
+    dispatch(setLoggedIn(false))
+    setUserData()
+  }
+}
+
+/**
+ * Set user data to local storage
+ * @param  {...any} args
+ */
+const setUserData = (...args) => {
+  const [token, tokenExpiry, refreshToken] = args
+  setLocalStorage(USER_TOKEN, token)
+  setLocalStorage(USER_TOKEN_EXPIRY, tokenExpiry)
+  setLocalStorage(USER_REFRESH_TOKEN, refreshToken)
+}
+
+/**
  * Dispatch modal message
  * @param {*} dispatch
  * @param {*} message
@@ -126,7 +156,11 @@ const dispatchModalMessage = (dispatch, message) => {
  * @param {*} value
  */
 const setLocalStorage = (key, value) => {
-  localStorage.setItem(key, value)
+  if (value !== null && value !== undefined) {
+    localStorage.setItem(key, value)
+  } else {
+    localStorage.removeItem(key)
+  }
 }
 
 /**

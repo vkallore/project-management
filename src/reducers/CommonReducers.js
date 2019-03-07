@@ -1,7 +1,8 @@
 import {
   SHOW_MODAL,
   HIDE_MODAL,
-  SET_AJAX_PROCESSING
+  SET_AJAX_PROCESSING,
+  SET_LOGGED_IN
 } from '../constants/AppConstants'
 
 const initialState = {
@@ -27,6 +28,8 @@ export const commonReducer = (state = initialState, action) => {
       return hideModal(state, action)
     case SET_AJAX_PROCESSING:
       return setAjaxProcessing(state, action)
+    case SET_LOGGED_IN:
+      return setLoggedIn(state, action)
     default:
       return state
   }
@@ -67,5 +70,17 @@ const setAjaxProcessing = (state, action) => {
   return {
     ...state,
     ajaxProcessing: action.ajaxProcessing
+  }
+}
+
+/**
+ * Set state as logged in TRUE/FALSE
+ * @param {*} state
+ * @param {*} action
+ */
+const setLoggedIn = (state, action) => {
+  return {
+    ...state,
+    loggedIn: action.loggedIn
   }
 }

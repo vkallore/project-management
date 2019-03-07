@@ -15,6 +15,9 @@ class LoginContainer extends React.Component {
       ajaxProcessing,
       formFields
     } = this.props
+    if (loggedIn) {
+      return <Redirect to="/" />
+    }
     return (
       <React.Fragment>
         <h1 className="title">Login</h1>
