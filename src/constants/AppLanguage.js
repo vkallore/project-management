@@ -1,0 +1,5 @@
+export const TEXT_HOME = 'Home'
+export const TEXT_LOGIN = 'Login'
+export const TEXT_LOGOUT = 'Logout'
+export const TEXT_REGISTER = 'Create Account'
+export const TEXT_DASHBOARD = 'Dashboard'

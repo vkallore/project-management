@@ -19,24 +19,26 @@ class Input extends React.Component {
   }
 
   render() {
-    const { id, label, type, name, value, formModel, forms } = this.props
+    const { id, type, name, value, formModel, forms } = this.props
+    let { className } = this.props
     const inputValue =
       value === undefined
         ? forms[formModel] && forms[formModel][name]
           ? forms[formModel][name]
           : ''
         : value
+    className = `input ${className}`
     return (
-      <label>
-        {label}
+      <React.Fragment>
         <input
           type={type || 'text'}
           name={name || ''}
-          id={id || ''}
+          id={id || name}
           value={inputValue}
           onChange={this.onChange}
+          className={className}
         />
-      </label>
+      </React.Fragment>
     )
   }
 }

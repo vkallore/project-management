@@ -2,7 +2,8 @@ import {
   SHOW_MODAL,
   HIDE_MODAL,
   SET_AJAX_PROCESSING,
-  SET_LOGGED_IN
+  SET_LOGGED_IN,
+  SHOW_MESSAGE
 } from '../constants/AppConstants'
 
 const initialState = {
@@ -17,7 +18,9 @@ const initialState = {
     secondaryBtnText: 'Cancel'
   },
   ajaxProcessing: false,
-  loggedIn: false
+  loggedIn: false,
+  apiResponse: '',
+  apiResponseType: ''
 }
 
 export const commonReducer = (state = initialState, action) => {
@@ -30,8 +33,23 @@ export const commonReducer = (state = initialState, action) => {
       return setAjaxProcessing(state, action)
     case SET_LOGGED_IN:
       return setLoggedIn(state, action)
+    case SHOW_MESSAGE:
+      return showMessage(state, action)
     default:
       return state
+  }
+}
+
+/**
+ * Show message
+ * @param {*} state
+ * @param {*} action
+ */
+const showMessage = (state, action) => {
+  return {
+    ...state,
+    apiResponse: action.apiResponse,
+    apiResponseType: action.apiResponseType
   }
 }
 

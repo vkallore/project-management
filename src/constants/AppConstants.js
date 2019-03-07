@@ -1,9 +1,18 @@
+export const SHOW_MESSAGE = 'SHOW_MESSAGE'
 export const SHOW_MODAL = 'SHOW_MODAL'
 export const HIDE_MODAL = 'HIDE_MODAL'
 export const SET_AJAX_PROCESSING = 'SET_AJAX_PROCESSING'
 export const RESET_FORM = 'RESET_FORM'
 export const CHANGE_FORM = 'CHANGE_FORM'
 export const SET_LOGGED_IN = 'SET_LOGGED_IN'
+
+/* Header/Localstorage */
 export const USER_TOKEN = 'x-token'
 export const USER_TOKEN_EXPIRY = 'x-token-expiry'
 export const USER_REFRESH_TOKEN = 'x-refresh-token'
+
+/* HTML/CSS related constants */
+export const CSS_CLASS_SUCCESS = 'success'
+export const CSS_CLASS_DANGER = 'danger'
+export const CSS_CLASS_INFO = 'info'
+export const CSS_CLASS_DEFAILT = 'defailt'

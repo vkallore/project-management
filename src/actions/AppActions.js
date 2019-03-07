@@ -9,7 +9,9 @@ import {
   USER_TOKEN,
   USER_TOKEN_EXPIRY,
   USER_REFRESH_TOKEN,
-  SET_LOGGED_IN
+  SET_LOGGED_IN,
+  SHOW_MESSAGE,
+  CSS_CLASS_DANGER
 } from '../constants/AppConstants'
 import { API_ERROR_404, API_COMMON_ERROR } from '../constants/AppMessage'
 import { FORM_LOGIN } from '../constants/AppForms'
@@ -41,6 +43,7 @@ export const closeModal = modalActions => {
  */
 export const login = (username, password) => {
   let message = ''
+  let detailedMessage = []
   return dispatch => {
     dispatch(setAjaxProcessing(true))
     let newFormData = {
@@ -71,8 +74,13 @@ export const login = (username, password) => {
               message = API_ERROR_404
               break
 
+            case 500:
+              message = API_COMMON_ERROR
+              break
+
             default:
               message = error.response.data.message
+              detailedMessage = error.response.data.data
               break
           }
         } else if (error.request) {
@@ -84,8 +92,7 @@ export const login = (username, password) => {
         }
       })
       .then(() => {
-        dispatchModalMessage(dispatch, message)
-        dispatch(setAjaxProcessing(false))
+        dispatchMessage(dispatch, message, detailedMessage, CSS_CLASS_DANGER)
       })
   }
 }
@@ -96,8 +103,6 @@ export const login = (username, password) => {
  * @param {*} newState
  */
 export const changeForm = (formType, newState) => {
-  console.log(formType)
-  console.log(newState)
   return { type: CHANGE_FORM, newState, formType: formType }
 }
 
@@ -117,12 +122,26 @@ export const setLoggedIn = loggedIn => {
   return { type: SET_LOGGED_IN, loggedIn }
 }
 
+/**
+ * Set as not logged in & clear user data
+ */
 export const logout = () => {
   return dispatch => {
     dispatch(setLoggedIn(false))
     setUserData()
   }
 }
+
+const buildDetailedMessage = detailedMessage =>
+  new Promise(resolve => {
+    let strDetailedMessage = ''
+    if (typeof detailedMessage === 'array') {
+      detailedMessage.forEach(message => {
+        strDetailedMessage += `- ${message} \n`
+      })
+    }
+    resolve(strDetailedMessage)
+  })
 
 /**
  * Set user data to local storage
@@ -133,6 +152,27 @@ const setUserData = (...args) => {
   setLocalStorage(USER_TOKEN, token)
   setLocalStorage(USER_TOKEN_EXPIRY, tokenExpiry)
   setLocalStorage(USER_REFRESH_TOKEN, refreshToken)
+}
+
+/**
+ * Dispatch message
+ * @param {*} dispatch
+ * @param {*} message
+ */
+const dispatchMessage = async (
+  dispatch,
+  message,
+  detailedMessage,
+  messageType
+) => {
+  message += await buildDetailedMessage(detailedMessage)
+  dispatch({
+    type: SHOW_MESSAGE,
+    apiResponse: message,
+    apiResponseType: messageType
+  })
+
+  dispatch(setAjaxProcessing(false))
 }
 
 /**
