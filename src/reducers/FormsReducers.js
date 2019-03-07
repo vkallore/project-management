@@ -1,7 +1,5 @@
-import {
-  RESET_FORM,
-  CHANGE_LOGIN_REGISTER_FORM
-} from '../constants/AppConstants'
+import { RESET_FORM, CHANGE_FORM } from '../constants/AppConstants'
+import { FORM_LOGIN, FORM_REGISTER } from '../constants/AppForms'
 
 const initialState = {
   login: {
@@ -16,12 +14,12 @@ const initialState = {
   }
 }
 
-export const loginRegisterReducer = (state = initialState, action) => {
+export const formsReducer = (state = initialState, action) => {
   switch (action.type) {
     case RESET_FORM:
       return resetForm(state, action)
-    case CHANGE_LOGIN_REGISTER_FORM:
-      return changeLoginRegisterForm(state, action)
+    case CHANGE_FORM:
+      return updateForm(state, action)
     default:
       return state
   }
@@ -29,12 +27,12 @@ export const loginRegisterReducer = (state = initialState, action) => {
 
 const resetForm = (state, action) => {
   switch (action.formType) {
-    case 'login':
+    case FORM_LOGIN:
       return {
         ...state,
         login: initialState.login
       }
-    case 'register':
+    case FORM_REGISTER:
       return {
         ...state,
         register: initialState.register
@@ -44,14 +42,14 @@ const resetForm = (state, action) => {
   }
 }
 
-const changeLoginRegisterForm = (state, action) => {
+const updateForm = (state, action) => {
   switch (action.formType) {
-    case 'login':
+    case FORM_LOGIN:
       return {
         ...state,
         login: { ...state.login, ...action.newState }
       }
-    case 'register':
+    case FORM_REGISTER:
       return {
         ...state,
         register: { ...state.register, ...action.newState }

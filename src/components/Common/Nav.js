@@ -9,32 +9,34 @@ class Nav extends React.Component {
   render() {
     const { loggedIn } = this.props
     return (
-      <nav
-        className="navbar is-fixed-top"
-        role="navigation"
-        aria-label="main navigation"
-      >
-        <div className="container">
-          <div className="navbar-brand">
-            <Link to="/" className="navbar-item">
-              <img src={LOGO} alt="FLIP - Project Management App" />
-            </Link>
-            <div
-              className="navbar-burger burger"
-              data-target="siteMainNav"
-              aria-label="menu"
-              aria-expanded="false"
-            >
-              <span />
-              <span />
-              <span />
+      <div className="hero-head">
+        <nav
+          className="main-nav navbar is-fixed-top"
+          role="navigation"
+          aria-label="main navigation"
+        >
+          <div className="container">
+            <div className="navbar-brand">
+              <Link to="/" className="navbar-item">
+                <img src={LOGO} alt="FLIP - Project Management App" />
+              </Link>
+              <div
+                className="navbar-burger burger"
+                data-target="siteMainNav"
+                aria-label="menu"
+                aria-expanded="false"
+              >
+                <span />
+                <span />
+                <span />
+              </div>
+            </div>
+            <div id="siteMainNav" className="navbar-menu">
+              {loggedIn ? <UserNavItems /> : <PublicNavItems />}
             </div>
           </div>
-          <div id="siteMainNav" className="navbar-menu">
-            {loggedIn ? <UserNavItems /> : <PublicNavItems />}
-          </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
     )
   }
 }

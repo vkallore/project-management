@@ -5,13 +5,14 @@ import {
   HIDE_MODAL,
   SET_AJAX_PROCESSING,
   RESET_FORM,
-  CHANGE_LOGIN_REGISTER_FORM,
+  CHANGE_FORM,
   USER_TOKEN,
   USER_TOKEN_EXPIRY,
   USER_REFRESH_TOKEN,
   SET_LOGGED_IN
 } from '../constants/AppConstants'
 import { API_ERROR_404, API_COMMON_ERROR } from '../constants/AppMessage'
+import { FORM_LOGIN } from '../constants/AppForms'
 
 /**
  * Show the modal
@@ -57,7 +58,7 @@ export const login = (username, password) => {
           setUserData(data.token, data.tokenExpiry, data.refreshToken)
         }
         /* Reset the form */
-        dispatch({ type: RESET_FORM, formType: 'login' })
+        dispatch({ type: RESET_FORM, formType: FORM_LOGIN })
       })
       .catch(error => {
         if (error.response) {
@@ -94,8 +95,10 @@ export const login = (username, password) => {
  * @param {*} formType
  * @param {*} newState
  */
-export const changeLoginRegisterForm = (formType, newState) => {
-  return { type: CHANGE_LOGIN_REGISTER_FORM, newState, formType: formType }
+export const changeForm = (formType, newState) => {
+  console.log(formType)
+  console.log(newState)
+  return { type: CHANGE_FORM, newState, formType: formType }
 }
 
 /**
@@ -143,7 +146,7 @@ const dispatchModalMessage = (dispatch, message) => {
     modal: {
       showModal: true,
       backDrop: true,
-      modalTitle: 'Login',
+      modalTitle: '',
       modalBody: message,
       primaryBtnText: 'Okay'
     }

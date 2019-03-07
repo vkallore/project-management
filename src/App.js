@@ -11,6 +11,7 @@ import PageNotFoundContainer from './components/Common/PageNotFoundContainer'
 import { getLocalStorage, setLoggedIn } from './actions/AppActions'
 import { USER_TOKEN } from './constants/AppConstants'
 import LogoutView from './components/Auth/LogoutView'
+import Footer from './components/Common/Footer'
 
 class App extends Component {
   componentDidMount() {
@@ -27,18 +28,25 @@ class App extends Component {
       <React.Fragment>
         <Router>
           <React.Fragment>
-            <Nav loggedIn={loggedIn} />
-            <div className="section">
-              <div className="container">
-                <Switch>
-                  <Route exact={true} path="/" component={HomeContainer} />
-                  <Route path="/login" component={LoginContainer} />
-                  <Route path="/register" component={RegisterForm} />
-                  <Route path="/logout" component={LogoutView} />
-                  <Route path="*" component={PageNotFoundContainer} />
-                </Switch>
+            <section>
+              <Nav loggedIn={loggedIn} />
+            </section>
+            <div className="columns">
+              <div className="column">
+                <div className="section">
+                  <div className="container">
+                    <Switch>
+                      <Route exact={true} path="/" component={HomeContainer} />
+                      <Route path="/login" component={LoginContainer} />
+                      <Route path="/register" component={RegisterForm} />
+                      <Route path="/logout" component={LogoutView} />
+                      <Route path="*" component={PageNotFoundContainer} />
+                    </Switch>
+                  </div>
+                </div>
               </div>
             </div>
+            <Footer />
             <CommonModal />
           </React.Fragment>
         </Router>

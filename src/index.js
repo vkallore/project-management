@@ -9,6 +9,7 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 
 import 'bulma/css/bulma.css'
+import './assets/css/bulmaswatch.css'
 import './assets/css/custom.scss'
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

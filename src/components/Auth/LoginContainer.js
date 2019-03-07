@@ -2,19 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Redirect } from 'react-router-dom'
 
-import { login, changeLoginRegisterForm } from '../../actions/AppActions'
+import { login } from '../../actions/AppActions'
 
 import LoginForm from './LoginForm'
+import { FORM_LOGIN } from '../../constants/AppForms'
 
 class LoginContainer extends React.Component {
   render() {
-    const {
-      loggedIn,
-      handleSubmit,
-      handleChange,
-      ajaxProcessing,
-      formFields
-    } = this.props
+    const { loggedIn, handleSubmit, ajaxProcessing, formFields } = this.props
     if (loggedIn) {
       return <Redirect to="/" />
     }
@@ -23,9 +18,9 @@ class LoginContainer extends React.Component {
         <h1 className="title">Login</h1>
         <LoginForm
           handleSubmit={handleSubmit}
-          handleChange={handleChange}
           ajaxProcessing={ajaxProcessing}
           formFields={formFields}
+          formModel={FORM_LOGIN}
         />
       </React.Fragment>
     )
@@ -35,11 +30,10 @@ class LoginContainer extends React.Component {
 const mapStateToProps = state => ({
   loggedIn: state.common.loggedIn,
   ajaxProcessing: state.common.ajaxProcessing,
-  formFields: state.loginRegister.login
+  formFields: state.forms.login
 })
 
 const mapDispatchToProps = dispatch => ({
-  handleChange: values => dispatch(changeLoginRegisterForm('login', values)),
   handleSubmit: formFields =>
     dispatch(login(formFields.username, formFields.password))
   // clearErrors: () => dispatch(setErrorMessage(''))

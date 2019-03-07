@@ -1,20 +1,10 @@
 import React from 'react'
 
+import Input from '../FormElements/Input'
+
 class LoginForm extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.changeInput = this.changeInput.bind(this)
-  }
-
-  changeInput(event) {
-    const { handleChange } = this.props
-    const { value, name } = event.target
-    handleChange({ [name]: value })
-  }
   render() {
-    const { formFields, handleSubmit, ajaxProcessing } = this.props
-
+    const { formFields, handleSubmit, ajaxProcessing, formModel } = this.props
     const submitForm = event => {
       event.preventDefault()
       handleSubmit(formFields)
@@ -23,19 +13,19 @@ class LoginForm extends React.Component {
     return (
       <form onSubmit={submitForm}>
         {ajaxProcessing && <span>Loading</span>}
-        <input
+        <Input
           type="text"
           name="username"
           label="Email:"
-          onChange={this.changeInput}
+          formModel={formModel}
         />
-        <input
+        <Input
           type="password"
           name="password"
           label="Password:"
-          onChange={this.changeInput}
+          formModel={formModel}
         />
-        <input type="submit" value="Submit" />
+        <Input type="submit" value="Submit" />
       </form>
     )
   }
