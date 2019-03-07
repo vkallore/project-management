@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 
 import rootReducer from './reducers'
@@ -11,11 +11,9 @@ import * as serviceWorker from './serviceWorker'
 import 'bulma/css/bulma.css'
 import './assets/css/custom.scss'
 
-const store = createStore(
-  rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  applyMiddleware(thunk)
-)
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+
+const store = createStore(rootReducer, composeEnhancer(applyMiddleware(thunk)))
 
 ReactDOM.render(
   <Provider store={store}>
