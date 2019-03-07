@@ -6,10 +6,21 @@ const AlertBox = props => {
   if (alertText === undefined || alertText === '') {
     return null
   }
+  let alertTextSplit = alertText.split('\n')
+  const alertTextHtml = alertTextSplit.map(alertText => {
+    return (
+      <React.Fragment key={alertText}>
+        <span>
+          {alertText}
+          {alertTextSplit.length > 1 ? <br /> : null}
+        </span>
+      </React.Fragment>
+    )
+  })
   return (
     <div className={className}>
       {allowDelete && <button className="delete" />}
-      {alertText}
+      {alertTextHtml}
     </div>
   )
 }

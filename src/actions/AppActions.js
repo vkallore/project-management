@@ -137,7 +137,7 @@ const buildDetailedMessage = detailedMessage =>
     let strDetailedMessage = ''
     if (typeof detailedMessage === 'array') {
       detailedMessage.forEach(message => {
-        strDetailedMessage += `- ${message} \n`
+        strDetailedMessage += `\n - ${message}`
       })
     }
     resolve(strDetailedMessage)
