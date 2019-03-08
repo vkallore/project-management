@@ -26,7 +26,6 @@ class LoginContainer extends React.Component {
     return (
       <React.Fragment>
         <Helmet>
-          <meta charSet="utf-8" />
           <title>{TITLE_LOGIN}</title>
         </Helmet>
         <h1 className="title">{TEXT_LOGIN}</h1>

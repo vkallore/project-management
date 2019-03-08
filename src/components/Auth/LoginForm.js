@@ -5,6 +5,7 @@ import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
 import Input from '../FormElements/Input'
 import Button from '../FormElements/Button'
 import { TEXT_LOGIN } from '../../constants/AppLanguage'
+import { StyledLoader } from '../Common/Loaders'
 
 class LoginForm extends React.Component {
   render() {
@@ -16,8 +17,6 @@ class LoginForm extends React.Component {
 
     return (
       <form onSubmit={submitForm}>
-        {ajaxProcessing && <span>Loading</span>}
-
         <div className="field">
           <label>Username/Email:</label>
           <p className="control has-icons-left">
@@ -46,7 +45,14 @@ class LoginForm extends React.Component {
             </span>
           </p>
         </div>
-        <Button text={TEXT_LOGIN} />
+        <div className="buttons is-centered">
+          <Button
+            text={TEXT_LOGIN}
+            className="is-info"
+            disabled={ajaxProcessing}
+          />
+        </div>
+        <div className="ajaxloader">{!ajaxProcessing && <StyledLoader />}</div>
       </form>
     )
   }

@@ -9,3 +9,27 @@
     margin-top: -0.75rem;
   }
 }
+
+/* Page Loader/Ajax Processing */
+.ajaxloader {
+  -webkit-transform: translateX(100%);
+  transform: translateX(100%);
+}
+.ajaxloader.is-active {
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+}
+/* .ajaxloader:not(.is-left-to-right), .ajaxloader:not(.is-right-to-left) {
+  -webkit-transform: translateY(-100%);
+  transform: translateY(-100%);
+} */
+.ajaxloader {
+  position: fixed;
+  bottom: 2em;
+  right: 2em;
+  padding-top: 2em;
+  background: #00d1b2;
+  z-index: 999998;
+  transition: transform 0.35s ease-out, -webkit-transform 0.35s ease-out;
+  will-change: transform;
+}
