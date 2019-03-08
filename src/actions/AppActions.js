@@ -135,11 +135,11 @@ export const logout = () => {
 const buildDetailedMessage = detailedMessage =>
   new Promise(resolve => {
     let strDetailedMessage = ''
-    if (typeof detailedMessage === 'array') {
+    try {
       detailedMessage.forEach(message => {
         strDetailedMessage += `\n - ${message}`
       })
-    }
+    } catch (err) {}
     resolve(strDetailedMessage)
   })
 
