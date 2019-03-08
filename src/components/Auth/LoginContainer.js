@@ -1,12 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Redirect } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 
 import { login } from '../../actions/AppActions'
 
 import LoginForm from './LoginForm'
 import { FORM_LOGIN } from '../../constants/AppForms'
 import AlertBox from '../Common/AlertBox'
+import { TITLE_LOGIN, TEXT_LOGIN } from '../../constants/AppLanguage'
 
 class LoginContainer extends React.Component {
   render() {
@@ -23,7 +25,11 @@ class LoginContainer extends React.Component {
     }
     return (
       <React.Fragment>
-        <h1 className="title">Login</h1>
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>{TITLE_LOGIN}</title>
+        </Helmet>
+        <h1 className="title">{TEXT_LOGIN}</h1>
         <div className="columns is-centered">
           <div className="column is-half">
             <AlertBox alertText={apiResponse} alertType={apiResponseType} />

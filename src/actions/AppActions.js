@@ -175,23 +175,23 @@ const dispatchMessage = async (
   dispatch(setAjaxProcessing(false))
 }
 
-/**
- * Dispatch modal message
- * @param {*} dispatch
- * @param {*} message
- */
-const dispatchModalMessage = (dispatch, message) => {
-  dispatch({
-    type: SHOW_MODAL,
-    modal: {
-      showModal: true,
-      backDrop: true,
-      modalTitle: '',
-      modalBody: message,
-      primaryBtnText: 'Okay'
-    }
-  })
-}
+// /**
+//  * Dispatch modal message
+//  * @param {*} dispatch
+//  * @param {*} message
+//  */
+// const dispatchModalMessage = (dispatch, message) => {
+//   dispatch({
+//     type: SHOW_MODAL,
+//     modal: {
+//       showModal: true,
+//       backDrop: true,
+//       modalTitle: '',
+//       modalBody: message,
+//       primaryBtnText: 'Okay'
+//     }
+//   })
+// }
 
 /**
  * Set local storage

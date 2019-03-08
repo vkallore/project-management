@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Helmet } from 'react-helmet'
 
 import Nav from './components/Common/Nav'
 import CommonModal from './components/Common/CommonModal'
@@ -12,6 +13,7 @@ import { getLocalStorage, setLoggedIn } from './actions/AppActions'
 import { USER_TOKEN } from './constants/AppConstants'
 import LogoutView from './components/Auth/LogoutView'
 import Footer from './components/Common/Footer'
+import { TITLE_SITE } from './constants/AppLanguage'
 
 class App extends Component {
   componentDidMount() {
@@ -28,6 +30,11 @@ class App extends Component {
       <React.Fragment>
         <Router>
           <React.Fragment>
+            <Helmet>
+              <meta charSet="utf-8" />
+              <title>{TITLE_SITE}</title>
+              {/* <link rel="canonical" href="" /> */}
+            </Helmet>
             <section>
               <Nav loggedIn={loggedIn} />
             </section>

@@ -4,6 +4,7 @@ import Link from 'react-router-dom/Link'
 import { LOGO } from '../../constants/ImageAssets'
 import UserNavItems from './UserNavItems'
 import PublicNavItems from './PublicNavItems'
+import { TITLE_SITE } from '../../constants/AppLanguage'
 
 class Nav extends React.Component {
   render() {
@@ -18,7 +19,7 @@ class Nav extends React.Component {
           <div className="container">
             <div className="navbar-brand">
               <Link to="/" className="navbar-item">
-                <img src={LOGO} alt="FLIP - Project Management App" />
+                <img src={LOGO} alt={TITLE_SITE} />
               </Link>
               <div
                 className="navbar-burger burger"
