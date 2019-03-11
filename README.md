@@ -1,3 +1,17 @@
+# Project Guidelines
+
+- ## Import modules with **absolute path**, not relative (Use of following in _.env_ helps to avoid relative path import)
+  ```
+  REACT_APP_NODE_PATH=src/
+  NODE_PATH=src/
+  ```
+- No index.js or index.jsx for filename Eg: Dashboard/Dashboard.jsx
+- component filename should be in **Pascal case** Eg: FileName.jsx
+- ~~No nested Folders~~ - Best practice to follow the concept of _'Reusable components'_
+- Foldername should be in **Pascal case**. Eg: Dashboard/
+
+# Other Notes from Create React App
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

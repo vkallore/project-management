@@ -4,7 +4,7 @@ import {
   SET_AJAX_PROCESSING,
   SET_LOGGED_IN,
   SHOW_MESSAGE
-} from '../constants/AppConstants'
+} from 'constants/AppConstants'
 
 const initialState = {
   modal: {

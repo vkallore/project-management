@@ -3,10 +3,10 @@ import { Route, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
-import LogoutView from '../components/Auth/LogoutView'
-import PageNotFoundContainer from '../components/Common/PageNotFoundContainer'
-import DashboardLayout from '../layouts/DashboardLayout'
-import DashboardContainer from '../components/Dashboard/DashboardContainer'
+import LogoutView from 'components/Auth/LogoutView'
+import PageNotFoundContainer from 'components/Common/PageNotFoundContainer'
+import DashboardLayout from 'layouts/DashboardLayout'
+import DashboardContainer from 'components/Dashboard/DashboardContainer'
 
 class DashboardRoutes extends React.Component {
   render() {

@@ -1,5 +1,5 @@
 import React from 'react'
-import AlertBox from './AlertBox'
+import AlertBox from 'components/Common/AlertBox'
 
 export const SvgLoader = props => {
   const { width, height, strokeColor, strokeWidth } = props

@@ -2,10 +2,10 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
 
-import Input from '../FormElements/Input'
-import Button from '../FormElements/Button'
-import { TEXT_LOGIN } from '../../constants/AppLanguage'
-import { StyledLoader } from '../Common/Loaders'
+import Input from 'components/FormElements/Input'
+import Button from 'components/FormElements/Button'
+import { TEXT_LOGIN } from 'constants/AppLanguage'
+import { StyledLoader } from 'components/Common/Loaders'
 
 class LoginForm extends React.Component {
   render() {

@@ -5,8 +5,8 @@ import {
   TEXT_LOGIN,
   TEXT_HOME,
   TEXT_REGISTER
-} from '../../constants/AppLanguage'
-import { LOGO } from '../../constants/ImageAssets'
+} from 'constants/AppLanguage'
+import { LOGO } from 'constants/ImageAssets'
 
 class Nav extends React.Component {
   render() {

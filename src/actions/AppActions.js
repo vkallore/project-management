@@ -12,9 +12,9 @@ import {
   SET_LOGGED_IN,
   SHOW_MESSAGE,
   CSS_CLASS_DANGER
-} from '../constants/AppConstants'
-import { API_ERROR_404, API_COMMON_ERROR } from '../constants/AppMessage'
-import { FORM_LOGIN } from '../constants/AppForms'
+} from 'constants/AppConstants'
+import { API_ERROR_404, API_COMMON_ERROR } from 'constants/AppMessage'
+import { FORM_LOGIN } from 'constants/AppForms'
 
 /**
  * Show the modal

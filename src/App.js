@@ -3,14 +3,14 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 
-import DashboardRoutes from './routes/DashboardRoutes'
-import SiteRoutes from './routes/SiteRoutes'
+import DashboardRoutes from 'routes/DashboardRoutes'
+import SiteRoutes from 'routes/SiteRoutes'
 
-import { getLocalStorage, setLoggedIn } from './actions/AppActions'
+import { getLocalStorage, setLoggedIn } from 'actions/AppActions'
 
-import CommonModal from './components/Common/CommonModal'
-import { USER_TOKEN } from './constants/AppConstants'
-import { TITLE_SITE } from './constants/AppLanguage'
+import CommonModal from 'components/Common/CommonModal'
+import { USER_TOKEN } from 'constants/AppConstants'
+import { TITLE_SITE } from 'constants/AppLanguage'
 
 class App extends Component {
   componentDidMount() {

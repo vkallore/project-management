@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Nav from '../components/Common/Nav'
-import Footer from '../components/Common/Footer'
+import Nav from 'components/Common/Nav'
+import Footer from 'components/Common/Footer'
 
 const SiteLayout = ({ children }) => {
   return (

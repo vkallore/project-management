@@ -1,10 +1,10 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
 
-import SideNav from '../components/Dashboard/Common/SideNav'
-import { TITLE_DASHBOARD } from '../constants/AppLanguage'
-import TopNav from '../components/Dashboard/Common/TopNav'
-import ErrorBoundary from '../components/Common/ErrorBoundary'
+import SideNav from 'components/Dashboard/Common/SideNav'
+import { TITLE_DASHBOARD } from 'constants/AppLanguage'
+import TopNav from 'components/Dashboard/Common/TopNav'
+import ErrorBoundary from 'components/Common/ErrorBoundary'
 
 const DashboardLayout = ({ children }) => {
   return (

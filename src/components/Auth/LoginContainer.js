@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import { withRouter, Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
-import { login } from '../../actions/AppActions'
+import { login } from 'actions/AppActions'
 
-import LoginForm from './LoginForm'
-import { FORM_LOGIN } from '../../constants/AppForms'
-import AlertBox from '../Common/AlertBox'
-import { TITLE_LOGIN, TEXT_LOGIN } from '../../constants/AppLanguage'
+import LoginForm from 'components/Auth/LoginForm'
+import { FORM_LOGIN } from 'constants/AppForms'
+import AlertBox from 'components/Common/AlertBox'
+import { TITLE_LOGIN, TEXT_LOGIN } from 'constants/AppLanguage'
 
 class LoginContainer extends React.Component {
   render() {

@@ -1,5 +1,5 @@
-import { RESET_FORM, CHANGE_FORM } from '../constants/AppConstants'
-import { FORM_LOGIN, FORM_REGISTER } from '../constants/AppForms'
+import { RESET_FORM, CHANGE_FORM } from 'constants/AppConstants'
+import { FORM_LOGIN, FORM_REGISTER } from 'constants/AppForms'
 
 const initialState = {
   login: {

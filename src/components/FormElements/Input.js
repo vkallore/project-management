@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { changeForm } from '../../actions/AppActions'
+import { changeForm } from 'actions/AppActions'
 
 class Input extends React.Component {
   constructor(props) {
