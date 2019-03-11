@@ -25,17 +25,13 @@ class App extends Component {
     const { loggedIn } = this.props
     return (
       <React.Fragment>
-        <Router>
-          <React.Fragment>
-            <Helmet>
-              <meta charSet="utf-8" />
-              <title>{TITLE_SITE}</title>
-              {/* <link rel="canonical" href="" /> */}
-            </Helmet>
-            {loggedIn ? <DashboardRoutes /> : <SiteRoutes />}
-            <CommonModal />
-          </React.Fragment>
-        </Router>
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>{TITLE_SITE}</title>
+          {/* <link rel="canonical" href="" /> */}
+        </Helmet>
+        <Router>{loggedIn ? <DashboardRoutes /> : <SiteRoutes />}</Router>
+        <CommonModal />
       </React.Fragment>
     )
   }

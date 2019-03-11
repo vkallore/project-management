@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet'
 import SideNav from '../components/Dashboard/Common/SideNav'
 import { TITLE_DASHBOARD } from '../constants/AppLanguage'
 import TopNav from '../components/Dashboard/Common/TopNav'
+import ErrorBoundary from '../components/Common/ErrorBoundary'
 
 const DashboardLayout = ({ children }) => {
   return (
@@ -11,6 +12,7 @@ const DashboardLayout = ({ children }) => {
       <Helmet>
         <title>{TITLE_DASHBOARD}</title>
       </Helmet>
+
       <TopNav />
 
       <div className="container">
@@ -19,7 +21,9 @@ const DashboardLayout = ({ children }) => {
             <SideNav />
           </div>
           <div className="column">
-            <div className="section">{children}</div>
+            <div className="section">
+              <ErrorBoundary>{children}</ErrorBoundary>
+            </div>
           </div>
         </div>
       </div>

@@ -21,6 +21,16 @@ class TopNav extends React.Component {
             <Link to="/" className="navbar-item">
               <img src={LOGO} alt={TITLE_SITE} />
             </Link>
+            <div
+              className="navbar-burger burger"
+              data-target="siteMainNav"
+              aria-label="menu"
+              aria-expanded="false"
+            >
+              <span />
+              <span />
+              <span />
+            </div>
           </div>
           <div id="siteMainNav" className="navbar-menu">
             <div className="navbar-start">

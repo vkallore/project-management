@@ -1,11 +1,11 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
-import HomeContainer from '../components/Home/HomeContainer'
+import HomeContainer from '../components/Site/Home/HomeContainer'
 import LoginContainer from '../components/Auth/LoginContainer'
-import RegisterForm from '../components/Register/RegisterForm'
+import RegisterForm from '../components/Site/Register/RegisterForm'
 import PageNotFoundContainer from '../components/Common/PageNotFoundContainer'
 import SiteLayout from '../layouts/SiteLayout'
 
@@ -32,7 +32,9 @@ const mapStateToProps = state => ({
   loggedIn: state.common.loggedIn
 })
 
-export default connect(
-  mapStateToProps,
-  () => ({})
-)(SiteRoutes)
+export default withRouter(
+  connect(
+    mapStateToProps,
+    () => ({})
+  )(SiteRoutes)
+)
