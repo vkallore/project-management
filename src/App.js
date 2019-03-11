@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Suspense } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
@@ -8,9 +8,10 @@ import SiteRoutes from 'routes/SiteRoutes'
 
 import { getLocalStorage, setLoggedIn } from 'actions/AppActions'
 
-import CommonModal from 'components/Common/CommonModal'
 import { USER_TOKEN } from 'constants/AppConstants'
 import { TITLE_SITE } from 'constants/AppLanguage'
+
+const CommonModal = React.lazy(() => import('components/Common/CommonModal'))
 
 class App extends Component {
   componentDidMount() {
@@ -31,7 +32,9 @@ class App extends Component {
           {/* <link rel="canonical" href="" /> */}
         </Helmet>
         <Router>{loggedIn ? <DashboardRoutes /> : <SiteRoutes />}</Router>
-        <CommonModal />
+        <Suspense fallback={null}>
+          <CommonModal />
+        </Suspense>
       </React.Fragment>
     )
   }
