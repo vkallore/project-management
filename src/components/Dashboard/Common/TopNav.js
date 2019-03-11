@@ -2,13 +2,13 @@ import React from 'react'
 import Link from 'react-router-dom/Link'
 import {
   TITLE_SITE,
-  TEXT_LOGIN,
   TEXT_HOME,
-  TEXT_REGISTER
-} from '../../constants/AppLanguage'
-import { LOGO } from '../../constants/ImageAssets'
+  TEXT_DASHBOARD,
+  TEXT_LOGOUT
+} from '../../../constants/AppLanguage'
+import { LOGO } from '../../../constants/ImageAssets'
 
-class Nav extends React.Component {
+class TopNav extends React.Component {
   render() {
     return (
       <nav
@@ -21,38 +21,17 @@ class Nav extends React.Component {
             <Link to="/" className="navbar-item">
               <img src={LOGO} alt={TITLE_SITE} />
             </Link>
-            <div
-              className="navbar-burger burger"
-              data-target="siteMainNav"
-              aria-label="menu"
-              aria-expanded="false"
-            >
-              <span />
-              <span />
-              <span />
-            </div>
           </div>
           <div id="siteMainNav" className="navbar-menu">
             <div className="navbar-start">
               <Link className="navbar-item" to="/" title={TEXT_HOME}>
-                {TEXT_HOME}
-              </Link>
-              <Link className="navbar-item" to="/login" title={TEXT_LOGIN}>
-                {TEXT_LOGIN}
+                {TEXT_DASHBOARD}
               </Link>
             </div>
             <div className="navbar-end">
-              <div className="navbar-item">
-                <div className="buttons">
-                  <Link
-                    className="navbar-item button is-primary"
-                    to="/register"
-                    title={TEXT_REGISTER}
-                  >
-                    {TEXT_REGISTER}
-                  </Link>
-                </div>
-              </div>
+              <Link className="navbar-item" to="/logout" title={TEXT_LOGOUT}>
+                {TEXT_LOGOUT}
+              </Link>
             </div>
           </div>
         </div>
@@ -85,4 +64,4 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })
 
-export default Nav
+export default TopNav
