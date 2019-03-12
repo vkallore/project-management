@@ -9,12 +9,10 @@ import {
   USER_TOKEN,
   USER_TOKEN_EXPIRY,
   USER_REFRESH_TOKEN,
-  SET_LOGGED_IN,
-  SHOW_MESSAGE,
-  CSS_CLASS_DANGER
+  SET_LOGGED_IN
 } from 'constants/AppConstants'
-import { API_ERROR_404, API_COMMON_ERROR } from 'constants/AppMessage'
 import { FORM_LOGIN } from 'constants/AppForms'
+import { errorHandler } from 'actions'
 
 /**
  * Show the modal
@@ -38,62 +36,28 @@ export const closeModal = modalActions => {
 
 /**
  * Login form
- * @param {*} username
- * @param {*} password
+ * @param {string} username
+ * @param {string} password
  */
 export const login = (username, password) => {
-  let message = ''
-  let detailedMessage = []
-  return dispatch => {
+  return async dispatch => {
     dispatch(setAjaxProcessing(true))
     let newFormData = {
       username: username,
       password: password
     }
-    axios
-      .post('/user/login', newFormData)
-      .then(response => {
-        message = response.message || ''
-        const data = response.data
-        /* Store the token in localstorage */
-        if (data.token) {
-          dispatch(setLoggedIn(true))
-          setUserData(data.token, data.tokenExpiry, data.refreshToken)
-        }
-        /* Reset the form */
-        dispatch({ type: RESET_FORM, formType: FORM_LOGIN })
-      })
-      .catch(error => {
-        if (error.response) {
-          /* Handle response */
-          const httpErrorCode = error.response.status
+    try {
+      const response = await axios.post('/user/login', newFormData)
 
-          /* Handle error code for 404 & others seperately */
-          switch (httpErrorCode) {
-            case 404:
-              message = API_ERROR_404
-              break
-
-            case 500:
-              message = API_COMMON_ERROR
-              break
-
-            default:
-              message = error.response.data.message
-              detailedMessage = error.response.data.data
-              break
-          }
-        } else if (error.request) {
-          /* Handle Request Timeout */
-          message = error.request.statusText
-        } else {
-          /* Handle any other error */
-          message = error.message || API_COMMON_ERROR
-        }
-      })
-      .then(() => {
-        dispatchMessage(dispatch, message, detailedMessage, CSS_CLASS_DANGER)
-      })
+      dispatch({ type: RESET_FORM, formType: FORM_LOGIN })
+      dispatch(setLoggedIn(true))
+      dispatch(setAjaxProcessing(false))
+      return response.data
+    } catch (error) {
+      errorHandler(dispatch, error)
+      dispatch(setAjaxProcessing(false))
+      return []
+    }
   }
 }
 
@@ -108,7 +72,7 @@ export const changeForm = (formType, newState) => {
 
 /**
  * Set state as ajax processing is ON/OFF
- * @param {*} ajaxProcessing
+ * @param {boolean} ajaxProcessing
  */
 const setAjaxProcessing = ajaxProcessing => {
   return { type: SET_AJAX_PROCESSING, ajaxProcessing }
@@ -116,7 +80,7 @@ const setAjaxProcessing = ajaxProcessing => {
 
 /**
  * Set state as logged in TRUE/FALSE
- * @param {*} loggedIn
+ * @param {boolean} loggedIn
  */
 export const setLoggedIn = loggedIn => {
   return { type: SET_LOGGED_IN, loggedIn }
@@ -132,47 +96,15 @@ export const logout = () => {
   }
 }
 
-const buildDetailedMessage = detailedMessage =>
-  new Promise(resolve => {
-    let strDetailedMessage = ''
-    try {
-      detailedMessage.forEach(message => {
-        strDetailedMessage += `\n - ${message}`
-      })
-    } catch (err) {}
-    resolve(strDetailedMessage)
-  })
-
 /**
  * Set user data to local storage
  * @param  {...any} args
  */
-const setUserData = (...args) => {
+export const setUserData = (...args) => {
   const [token, tokenExpiry, refreshToken] = args
   setLocalStorage(USER_TOKEN, token)
   setLocalStorage(USER_TOKEN_EXPIRY, tokenExpiry)
   setLocalStorage(USER_REFRESH_TOKEN, refreshToken)
-}
-
-/**
- * Dispatch message
- * @param {*} dispatch
- * @param {*} message
- */
-const dispatchMessage = async (
-  dispatch,
-  message,
-  detailedMessage,
-  messageType
-) => {
-  message += await buildDetailedMessage(detailedMessage)
-  dispatch({
-    type: SHOW_MESSAGE,
-    apiResponse: message,
-    apiResponseType: messageType
-  })
-
-  dispatch(setAjaxProcessing(false))
 }
 
 // /**

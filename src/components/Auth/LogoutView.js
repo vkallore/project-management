@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Redirect, withRouter } from 'react-router-dom'
 
 import { logout } from 'actions/AppActions'
 
@@ -13,4 +13,4 @@ class LogoutView extends React.Component {
   }
 }
 
-export default connect()(LogoutView)
+export default withRouter(connect()(LogoutView))

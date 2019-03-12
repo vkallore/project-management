@@ -6,22 +6,11 @@ import { Helmet } from 'react-helmet'
 import DashboardRoutes from 'routes/DashboardRoutes'
 import SiteRoutes from 'routes/SiteRoutes'
 
-import { getLocalStorage, setLoggedIn } from 'actions/AppActions'
-
-import { USER_TOKEN } from 'constants/AppConstants'
 import { TITLE_SITE } from 'constants/AppLanguage'
 
 const CommonModal = React.lazy(() => import('components/Common/CommonModal'))
 
 class App extends Component {
-  componentDidMount() {
-    const { setLoggedIn } = this.props
-    const userToken = getLocalStorage(USER_TOKEN)
-    if (userToken !== null) {
-      setLoggedIn(true)
-    }
-  }
-
   render() {
     const { loggedIn } = this.props
     return (
@@ -43,13 +32,5 @@ class App extends Component {
 const mapStateToProps = state => ({
   loggedIn: state.common.loggedIn
 })
-const mapDispatchToProps = dispatch => ({
-  setLoggedIn: () => {
-    dispatch(setLoggedIn(true))
-  }
-})
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App)
+export default connect(mapStateToProps)(App)

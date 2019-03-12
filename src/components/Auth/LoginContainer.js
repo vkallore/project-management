@@ -9,12 +9,21 @@ import LoginForm from 'components/Auth/LoginForm'
 import { FORM_LOGIN } from 'constants/AppForms'
 import AlertBox from 'components/Common/AlertBox'
 import { TITLE_LOGIN, TEXT_LOGIN } from 'constants/AppLanguage'
+import { setUserData } from 'actions/AppActions'
 
 class LoginContainer extends React.Component {
+  handleSubmit = async formFields => {
+    const { login, history } = this.props
+    const response = await login(formFields.username, formFields.password)
+    if (response.token) {
+      setUserData(response.token, response.tokenExpiry, response.refreshToken)
+      history.push('/')
+    }
+  }
+
   render() {
     const {
       loggedIn,
-      handleSubmit,
       ajaxProcessing,
       formFields,
       apiResponse,
@@ -33,7 +42,7 @@ class LoginContainer extends React.Component {
           <div className="column is-half">
             <AlertBox alertText={apiResponse} alertType={apiResponseType} />
             <LoginForm
-              handleSubmit={handleSubmit}
+              handleSubmit={this.handleSubmit}
               ajaxProcessing={ajaxProcessing}
               formFields={formFields}
               formModel={FORM_LOGIN}
@@ -53,15 +62,9 @@ const mapStateToProps = state => ({
   apiResponseType: state.common.apiResponseType
 })
 
-const mapDispatchToProps = dispatch => ({
-  handleSubmit: formFields =>
-    dispatch(login(formFields.username, formFields.password))
-  // clearErrors: () => dispatch(setErrorMessage(''))
-})
-
 export default withRouter(
   connect(
     mapStateToProps,
-    mapDispatchToProps
+    { login }
   )(LoginContainer)
 )

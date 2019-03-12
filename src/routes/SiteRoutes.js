@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react'
-import { Route, Switch, withRouter } from 'react-router-dom'
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
 
 import SiteLayout from 'layouts/SiteLayout'
 import { StyledLoader } from '../components/Common/Loaders'
@@ -20,19 +19,23 @@ const PageNotFoundContainer = React.lazy(() =>
 )
 
 class SiteRoutes extends React.Component {
-  render() {
+  renderRedirect() {
     const { loggedIn } = this.props
     if (loggedIn === true) {
       return <Redirect to="/" />
     }
+    return null
+  }
+  render() {
     return (
       <SiteLayout>
+        {this.renderRedirect()}
         <Suspense fallback={<StyledLoader />}>
           <Switch>
-            <Route exact={true} path="/" component={HomeContainer} />
-            <Route path="/login" component={LoginContainer} />
-            <Route path="/register" component={RegisterForm} />
-            <Route path="*" component={PageNotFoundContainer} />
+            <Route exact={true} path="/" render={() => <HomeContainer />} />
+            <Route path="/login" render={() => <LoginContainer />} />
+            <Route path="/register" render={() => <RegisterForm />} />
+            <Route path="*" render={() => <PageNotFoundContainer />} />
           </Switch>
         </Suspense>
       </SiteLayout>
