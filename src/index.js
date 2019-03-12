@@ -11,6 +11,7 @@ import * as serviceWorker from 'serviceWorker'
 import 'bulma/css/bulma.css'
 import 'assets/css/bulmaswatch.css'
 import 'assets/css/custom.scss'
+import { checkAndSetLogin } from 'actions/AppActions'
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
@@ -23,28 +24,8 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
-/* Bulma Nav Script */
-document.addEventListener('DOMContentLoaded', () => {
-  // Get all "navbar-burger" elements
-  const $navbarBurgers = Array.prototype.slice.call(
-    document.querySelectorAll('.navbar-burger'),
-    0
-  )
-  // Check if there are any navbar burgers
-  if ($navbarBurgers.length > 0) {
-    // Add a click event on each of them
-    $navbarBurgers.forEach(el => {
-      el.addEventListener('click', () => {
-        // Get the target from the "data-target" attribute
-        const target = el.dataset.target
-        const $target = document.getElementById(target)
-
-        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-        el.classList.toggle('is-active')
-        $target.classList.toggle('is-active')
-      })
-    })
-  }
+store.dispatch(dispatch => {
+  checkAndSetLogin(dispatch)
 })
 
 // If you want your app to work offline and load faster, you can change

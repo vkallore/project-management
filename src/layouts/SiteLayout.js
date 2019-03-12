@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Nav from 'components/Common/Nav'
+import Nav from 'components/Common/SiteNavItems'
 import Footer from 'components/Common/Footer'
 
 const SiteLayout = ({ children }) => {

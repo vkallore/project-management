@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet'
 
 import SideNav from 'components/Dashboard/Common/SideNav'
 import { TITLE_DASHBOARD } from 'constants/AppLanguage'
-import TopNav from 'components/Dashboard/Common/TopNav'
+import DashboardNavItems from 'components/Dashboard/Common/DashboardNavItems'
 import ErrorBoundary from 'components/Common/ErrorBoundary'
 
 const DashboardLayout = ({ children }) => {
@@ -13,7 +13,7 @@ const DashboardLayout = ({ children }) => {
         <title>{TITLE_DASHBOARD}</title>
       </Helmet>
 
-      <TopNav />
+      <DashboardNavItems />
 
       <div className="container">
         <div className="columns">

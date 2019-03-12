@@ -145,3 +145,15 @@ const setLocalStorage = (key, value) => {
 export const getLocalStorage = key => {
   return localStorage ? localStorage.getItem(key) : ''
 }
+
+/**
+ * Check and set as logged in
+ * @param {object} dispatch
+ */
+export const checkAndSetLogin = dispatch => {
+  const userToken = getLocalStorage(USER_TOKEN)
+  if (userToken !== null) {
+    // TODO - Validate token
+    dispatch(setLoggedIn(true))
+  }
+}
