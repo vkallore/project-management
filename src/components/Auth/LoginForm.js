@@ -4,6 +4,7 @@ import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
 
 import Input from 'components/FormElements/Input'
 import Button from 'components/FormElements/Button'
+import { VALID_PATTERN_PASSWORD } from 'constants/AppConstants'
 import { TEXT_LOGIN } from 'constants/AppLanguage'
 import { StyledLoader } from 'components/Common/Loaders'
 
@@ -21,10 +22,11 @@ class LoginForm extends React.Component {
           <label>Username/Email:</label>
           <p className="control has-icons-left">
             <Input
-              type="text"
+              type="email"
               name="username"
               placeholder="Username/Email"
               formModel={formModel}
+              required={true}
             />
             <span className="icon is-small is-left">
               <FontAwesomeIcon icon={faEnvelope} />
@@ -39,6 +41,8 @@ class LoginForm extends React.Component {
               name="password"
               placeholder="Password"
               formModel={formModel}
+              required={true}
+              pattern={VALID_PATTERN_PASSWORD}
             />
             <span className="icon is-small is-left">
               <FontAwesomeIcon icon={faLock} />

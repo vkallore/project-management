@@ -17,3 +17,6 @@ export const CSS_CLASS_SUCCESS = 'success'
 export const CSS_CLASS_DANGER = 'danger'
 export const CSS_CLASS_INFO = 'info'
 export const CSS_CLASS_DEFAILT = 'defailt'
+
+export const VALID_PATTERN_PASSWORD =
+  '(?=^.{8,}$)((?=.*d)|(?=.*W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$'
