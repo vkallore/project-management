@@ -1,4 +1,5 @@
 export const SHOW_MESSAGE = 'SHOW_MESSAGE'
+export const CLEAR_MESSAGE = 'CLEAR_MESSAGE'
 export const SHOW_MODAL = 'SHOW_MODAL'
 export const HIDE_MODAL = 'HIDE_MODAL'
 export const SET_AJAX_PROCESSING = 'SET_AJAX_PROCESSING'

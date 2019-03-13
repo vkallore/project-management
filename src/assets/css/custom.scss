@@ -10,6 +10,20 @@
   }
 }
 
+/* Alert Box */
+#alertBox {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  min-width: 25rem;
+}
+@media screen and (max-width: 768px) {
+  #alertBox {
+    left: 1rem;
+  }
+}
+/* EO Alert Box */
+
 /* Page Loader/Ajax Processing */
 .ajaxloader {
   -webkit-transform: translateX(100%);

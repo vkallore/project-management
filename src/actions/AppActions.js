@@ -54,7 +54,7 @@ export const login = (username, password) => {
       dispatch(setAjaxProcessing(false))
       return response.data
     } catch (error) {
-      errorHandler(dispatch, error)
+      errorHandler(dispatch, error, true)
       dispatch(setAjaxProcessing(false))
       return []
     }

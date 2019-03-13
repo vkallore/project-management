@@ -3,7 +3,8 @@ import {
   HIDE_MODAL,
   SET_AJAX_PROCESSING,
   SET_LOGGED_IN,
-  SHOW_MESSAGE
+  SHOW_MESSAGE,
+  CLEAR_MESSAGE
 } from 'constants/AppConstants'
 
 const initialState = {
@@ -20,7 +21,8 @@ const initialState = {
   ajaxProcessing: false,
   loggedIn: false,
   apiResponse: '',
-  apiResponseType: ''
+  apiResponseType: '',
+  allowMessageClear: false
 }
 
 export const commonReducer = (state = initialState, action) => {
@@ -35,6 +37,12 @@ export const commonReducer = (state = initialState, action) => {
       return setLoggedIn(state, action)
     case SHOW_MESSAGE:
       return showMessage(state, action)
+    case CLEAR_MESSAGE:
+      return showMessage(state, {
+        apiResponse: '',
+        apiResponseType: '',
+        allowMessageClear: false
+      })
     default:
       return state
   }
@@ -49,7 +57,8 @@ const showMessage = (state, action) => {
   return {
     ...state,
     apiResponse: action.apiResponse,
-    apiResponseType: action.apiResponseType
+    apiResponseType: action.apiResponseType,
+    allowMessageClear: action.allowMessageClear
   }
 }
 

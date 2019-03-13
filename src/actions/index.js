@@ -1,11 +1,15 @@
 import { API_ERROR_404, API_COMMON_ERROR } from 'constants/AppMessage'
-import { SHOW_MESSAGE, CSS_CLASS_DANGER } from 'constants/AppConstants'
+import {
+  SHOW_MESSAGE,
+  CSS_CLASS_DANGER,
+  CLEAR_MESSAGE
+} from 'constants/AppConstants'
 
 /**
  * Common error hander for API calls
  * @param {*} error
  */
-export const errorHandler = (dispatch, error) => {
+export const errorHandler = (dispatch, error, allowMessageClose = false) => {
   let message = ''
   let detailedMessage = []
   try {
@@ -38,7 +42,13 @@ export const errorHandler = (dispatch, error) => {
   } catch (err) {
     message = 'Error occurred!'
   }
-  dispatchMessage(dispatch, message, detailedMessage, CSS_CLASS_DANGER)
+  dispatchMessage(
+    dispatch,
+    message,
+    detailedMessage,
+    CSS_CLASS_DANGER,
+    allowMessageClose
+  )
 }
 
 /**
@@ -50,13 +60,15 @@ export const dispatchMessage = async (
   dispatch,
   message,
   detailedMessage,
-  messageType
+  messageType,
+  allowMessageClose = false
 ) => {
   message += await buildDetailedMessage(detailedMessage)
   dispatch({
     type: SHOW_MESSAGE,
     apiResponse: message,
-    apiResponseType: messageType
+    apiResponseType: messageType,
+    allowMessageClear: allowMessageClose
   })
 }
 
@@ -77,3 +89,11 @@ export const buildDetailedMessage = detailedMessage =>
     } catch (err) {}
     resolve(strDetailedMessage)
   })
+
+export const clearMessage = () => {
+  return dispatch => {
+    dispatch({
+      type: CLEAR_MESSAGE
+    })
+  }
+}
