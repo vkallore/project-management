@@ -12,7 +12,7 @@ import {
   SET_LOGGED_IN
 } from 'constants/AppConstants'
 import { FORM_LOGIN } from 'constants/AppForms'
-import { errorHandler } from 'actions'
+import { errorHandler, clearMessage } from 'actions'
 
 /**
  * Show the modal
@@ -47,6 +47,7 @@ export const login = (username, password) => {
       password: password
     }
     try {
+      dispatch(clearMessage())
       const response = await axios.post('/user/login', newFormData)
 
       dispatch({ type: RESET_FORM, formType: FORM_LOGIN })

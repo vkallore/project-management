@@ -6,9 +6,14 @@ import { Helmet } from 'react-helmet'
 import { login } from 'actions/AppActions'
 
 import LoginForm from 'components/Auth/LoginForm'
+
 import { FORM_LOGIN } from 'constants/AppForms'
 import { TITLE_LOGIN, TEXT_LOGIN } from 'constants/AppLanguage'
 import { setUserData } from 'actions/AppActions'
+
+import { clearMessage } from 'actions'
+
+const AlertBox = React.lazy(() => import('components/Common/AlertBox'))
 
 class LoginContainer extends React.Component {
   handleSubmit = async formFields => {
@@ -21,10 +26,18 @@ class LoginContainer extends React.Component {
   }
 
   render() {
-    const { loggedIn, ajaxProcessing, formFields } = this.props
+    const { loggedIn } = this.props
     if (loggedIn) {
       return <Redirect to="/" />
     }
+    const {
+      ajaxProcessing,
+      formFields,
+      apiResponse,
+      apiResponseType,
+      allowMessageClear,
+      clearMessage
+    } = this.props
     return (
       <React.Fragment>
         <Helmet>
@@ -41,6 +54,12 @@ class LoginContainer extends React.Component {
             />
           </div>
         </div>
+        <AlertBox
+          alertText={apiResponse}
+          alertType={apiResponseType}
+          allowMessageClear={allowMessageClear}
+          clearMessage={clearMessage}
+        />
       </React.Fragment>
     )
   }
@@ -49,12 +68,15 @@ class LoginContainer extends React.Component {
 const mapStateToProps = state => ({
   loggedIn: state.common.loggedIn,
   ajaxProcessing: state.common.ajaxProcessing,
-  formFields: state.forms.login
+  formFields: state.forms.login,
+  apiResponse: state.common.apiResponse,
+  apiResponseType: state.common.apiResponseType,
+  allowMessageClear: state.common.allowMessageClear
 })
 
 export default withRouter(
   connect(
     mapStateToProps,
-    { login }
+    { login, clearMessage }
   )(LoginContainer)
 )

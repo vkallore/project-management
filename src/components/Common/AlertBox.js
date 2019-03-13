@@ -6,9 +6,12 @@ const AlertBox = props => {
     alertText,
     allowMessageClear,
     children,
-    clearMessage
+    clearMessage,
+    showInline = false
   } = props
-  const className = `notification is-${alertType}`
+  const className = `notification is-${alertType} ${
+    !showInline ? 'fixed-notification' : ''
+  }`
   if ((alertText === undefined || alertText === '') && children === undefined) {
     return null
   }
@@ -26,7 +29,7 @@ const AlertBox = props => {
   })
   console.log(typeof clearMessage)
   return (
-    <div className={className} id="alertBox">
+    <div className={className}>
       {allowMessageClear && typeof clearMessage === 'function' && (
         <button className="delete" onClick={clearMessage} />
       )}

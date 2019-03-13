@@ -8,20 +8,11 @@ import SiteRoutes from 'routes/SiteRoutes'
 
 import { TITLE_SITE } from 'constants/AppLanguage'
 
-import { clearMessage } from 'actions'
-
 const CommonModal = React.lazy(() => import('components/Common/CommonModal'))
-const AlertBox = React.lazy(() => import('components/Common/AlertBox'))
 
 class App extends Component {
   render() {
-    const {
-      loggedIn,
-      apiResponse,
-      apiResponseType,
-      allowMessageClear,
-      clearMessage
-    } = this.props
+    const { loggedIn } = this.props
     return (
       <React.Fragment>
         <Helmet>
@@ -32,12 +23,6 @@ class App extends Component {
         <Router>{loggedIn ? <DashboardRoutes /> : <SiteRoutes />}</Router>
         <Suspense fallback={null}>
           <CommonModal />
-          <AlertBox
-            alertText={apiResponse}
-            alertType={apiResponseType}
-            allowMessageClear={allowMessageClear}
-            clearMessage={clearMessage}
-          />
         </Suspense>
       </React.Fragment>
     )
@@ -45,19 +30,7 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  loggedIn: state.common.loggedIn,
-  apiResponse: state.common.apiResponse,
-  apiResponseType: state.common.apiResponseType,
-  allowMessageClear: state.common.allowMessageClear
+  loggedIn: state.common.loggedIn
 })
 
-const mapDispatchToProps = dispatch => ({
-  clearMessage: () => {
-    dispatch(clearMessage())
-  }
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App)
+export default connect(mapStateToProps)(App)

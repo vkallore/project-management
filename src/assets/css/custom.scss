@@ -10,15 +10,15 @@
   }
 }
 
-/* Alert Box */
-#alertBox {
-  position: absolute;
+/* Fixed Alert Box */
+.fixed-notification {
+  position: fixed;
   bottom: 1rem;
   right: 1rem;
   min-width: 25rem;
 }
 @media screen and (max-width: 768px) {
-  #alertBox {
+  .fixed-notification {
     left: 1rem;
   }
 }
