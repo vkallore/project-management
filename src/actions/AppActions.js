@@ -9,10 +9,12 @@ import {
   USER_TOKEN,
   USER_TOKEN_EXPIRY,
   USER_REFRESH_TOKEN,
-  SET_LOGGED_IN
+  SET_LOGGED_IN,
+  CSS_CLASS_SUCCESS
 } from 'constants/AppConstants'
-import { FORM_LOGIN } from 'constants/AppForms'
-import { errorHandler, clearMessage } from 'actions'
+import { REGISTER_SUCCESS } from 'constants/AppMessage'
+import { FORM_LOGIN, FORM_REGISTER } from 'constants/AppForms'
+import { errorHandler, clearMessage, dispatchMessage } from 'actions'
 
 /**
  * Show the modal
@@ -55,6 +57,40 @@ export const login = (username, password) => {
       dispatch(setAjaxProcessing(false))
       return response.data
     } catch (error) {
+      errorHandler(dispatch, error, true)
+      dispatch(setAjaxProcessing(false))
+      return []
+    }
+  }
+}
+
+/**
+ * Register form
+ * @param {string} username
+ * @param {string} password
+ */
+export const register = (username, password) => {
+  return async dispatch => {
+    dispatch(setAjaxProcessing(true))
+    let newFormData = {
+      username: username,
+      password: password
+    }
+
+    try {
+      dispatch(clearMessage())
+      const response = await axios.post('/user/', newFormData)
+
+      dispatch(setAjaxProcessing(false))
+      if (response.data.id) {
+        dispatch({ type: RESET_FORM, formType: FORM_REGISTER })
+        dispatchMessage(dispatch, REGISTER_SUCCESS, null, CSS_CLASS_SUCCESS)
+      }
+      return []
+    } catch (error) {
+      console.log('ttt')
+      console.log('error')
+      console.log(error)
       errorHandler(dispatch, error, true)
       dispatch(setAjaxProcessing(false))
       return []

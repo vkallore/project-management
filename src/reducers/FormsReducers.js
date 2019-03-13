@@ -9,8 +9,8 @@ const initialState = {
   register: {
     username: '',
     password: '',
-    confirmPassword: '',
-    phoneNumber: ''
+    confirm_password: '',
+    phone_number: ''
   }
 }
 

@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 
-export const useMenuToggle = currentState => {
-  const [menuToggle, setMenuToggle] = useState(currentState)
-  const setToggle = useCallback(() => {
-    setMenuToggle(!menuToggle)
-  })
-  return [menuToggle, setToggle]
+export const useToggleState = value => {
+  const [stateValue, setStateValue] = useState(value)
+  const setToggleState = () => {
+    setStateValue(!stateValue)
+  }
+  return [stateValue, setToggleState]
 }

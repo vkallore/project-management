@@ -24,7 +24,12 @@ export const errorHandler = (dispatch, error, allowMessageClose = false) => {
           break
 
         case 500:
-          message = API_COMMON_ERROR
+          try {
+            message = error.response.data.message
+            detailedMessage = error.response.data.data
+          } catch (err) {
+            message = API_COMMON_ERROR
+          }
           break
 
         default:

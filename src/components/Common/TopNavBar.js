@@ -2,12 +2,12 @@ import React from 'react'
 import Link from 'react-router-dom/Link'
 import { TITLE_SITE } from 'constants/AppLanguage'
 import { LOGO } from 'constants/ImageAssets'
-import { useMenuToggle } from 'helpers/HooksHelpers'
+import { useToggleState } from 'helpers/HooksHelpers'
 
 const TopNavBar = ({ children }) => {
-  const [menuToggle, setMenuToggle] = useMenuToggle(false)
+  const [currentState, setToggleState] = useToggleState(false)
 
-  const menuToggleClass = menuToggle ? 'is-active' : ''
+  const menuClassName = currentState ? 'is-active' : ''
 
   return (
     <nav
@@ -21,11 +21,11 @@ const TopNavBar = ({ children }) => {
             <img src={LOGO} alt={TITLE_SITE} />
           </Link>
           <div
-            className={`navbar-burger burger ${menuToggleClass}`}
+            className={`navbar-burger burger ${menuClassName}`}
             data-target="siteMainNav"
             aria-label="menu"
             aria-expanded="false"
-            onClick={() => setMenuToggle()}
+            onClick={() => setToggleState()}
           >
             <span />
             <span />
@@ -34,8 +34,8 @@ const TopNavBar = ({ children }) => {
         </div>
         <div
           id="siteMainNav"
-          className={`navbar-menu ${menuToggleClass}`}
-          onClick={() => setMenuToggle()}
+          className={`navbar-menu ${menuClassName}`}
+          onClick={() => setToggleState()}
         >
           {children}
         </div>

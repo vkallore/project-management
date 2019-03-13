@@ -1,6 +1,10 @@
 .columns {
   margin: 0;
 }
+.control .icon.is-clickable {
+  cursor: pointer;
+  pointer-events: all;
+}
 
 @media screen and (min-width: 768px) {
   .columns {

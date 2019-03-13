@@ -11,8 +11,8 @@ const HomeContainer = React.lazy(() =>
 const LoginContainer = React.lazy(() =>
   import('components/Auth/LoginContainer')
 )
-const RegisterForm = React.lazy(() =>
-  import('components/Site/Register/RegisterForm')
+const RegisterContainer = React.lazy(() =>
+  import('components/Site/Register/RegisterContainer')
 )
 const PageNotFoundContainer = React.lazy(() =>
   import('components/Common/PageNotFoundContainer')
@@ -34,7 +34,7 @@ class SiteRoutes extends React.Component {
           <Switch>
             <Route exact={true} path="/" render={() => <HomeContainer />} />
             <Route path="/login" render={() => <LoginContainer />} />
-            <Route path="/register" render={() => <RegisterForm />} />
+            <Route path="/register" render={() => <RegisterContainer />} />
             <Route path="*" render={() => <PageNotFoundContainer />} />
           </Switch>
         </Suspense>
