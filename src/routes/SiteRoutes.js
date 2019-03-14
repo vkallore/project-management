@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 import SiteLayout from 'layouts/SiteLayout'
 import { StyledLoader } from '../components/Common/Loaders'
 
+import { clearMessage } from 'actions'
+
 const HomeContainer = React.lazy(() =>
   import('components/Site/Home/HomeContainer')
 )
@@ -20,12 +22,25 @@ const PageNotFoundContainer = React.lazy(() =>
 
 class SiteRoutes extends React.Component {
   renderRedirect() {
-    const { loggedIn } = this.props
-    if (loggedIn === true) {
+    const { loggedIn, history } = this.props
+    if (loggedIn === true && history.location.pathname !== '/') {
       return <Redirect to="/" />
     }
     return null
   }
+
+  componentDidUpdate(prevProps) {
+    const { clearMessage } = this.props
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      clearMessage()
+    }
+
+    const { loggedIn, history } = this.props
+    if (loggedIn === true && history.location.pathname !== '/') {
+      history.push('/')
+    }
+  }
+
   render() {
     return (
       <SiteLayout>
@@ -47,9 +62,15 @@ const mapStateToProps = state => ({
   loggedIn: state.common.loggedIn
 })
 
+const mapDispatchToProps = dispatch => ({
+  clearMessage: () => {
+    dispatch(clearMessage())
+  }
+})
+
 export default withRouter(
   connect(
     mapStateToProps,
-    () => ({})
+    mapDispatchToProps
   )(SiteRoutes)
 )

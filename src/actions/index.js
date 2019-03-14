@@ -40,9 +40,13 @@ export const errorHandler = (dispatch, error, allowMessageClose = false) => {
     } else if (error.request) {
       /* Handle Request Timeout */
       message = error.request.statusText
-    } else {
+    } else if (error.message) {
+      message = error.message
       /* Handle any other error */
-      message = error.message || API_COMMON_ERROR
+    } else if (typeof error === 'string') {
+      message = error
+    } else {
+      message = API_COMMON_ERROR
     }
   } catch (err) {
     message = 'Error occurred!'

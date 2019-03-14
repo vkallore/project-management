@@ -15,6 +15,7 @@ import {
 import { REGISTER_SUCCESS } from 'constants/AppMessage'
 import { FORM_LOGIN, FORM_REGISTER } from 'constants/AppForms'
 import { errorHandler, clearMessage, dispatchMessage } from 'actions'
+import { LOGGED_IN_ALREADY, LOGGED_IN_NOT } from '../constants/AppMessage'
 
 /**
  * Show the modal
@@ -50,6 +51,15 @@ export const login = (username, password) => {
     }
     try {
       dispatch(clearMessage())
+
+      /**
+       * Check whether user is already logged in or not
+       */
+      const isRedirecting = checkLoggedInAndRedirect(dispatch)
+      if (isRedirecting) {
+        return []
+      }
+
       const response = await axios.post('/user/login', newFormData)
 
       dispatch({ type: RESET_FORM, formType: FORM_LOGIN })
@@ -79,6 +89,15 @@ export const register = (username, password) => {
 
     try {
       dispatch(clearMessage())
+
+      /**
+       * Check whether user is already logged in or not
+       */
+      const isRedirecting = checkLoggedInAndRedirect(dispatch)
+      if (isRedirecting) {
+        return []
+      }
+
       const response = await axios.post('/user/', newFormData)
 
       dispatch(setAjaxProcessing(false))
@@ -88,9 +107,6 @@ export const register = (username, password) => {
       }
       return []
     } catch (error) {
-      console.log('ttt')
-      console.log('error')
-      console.log(error)
       errorHandler(dispatch, error, true)
       dispatch(setAjaxProcessing(false))
       return []
@@ -186,11 +202,39 @@ export const getLocalStorage = key => {
 /**
  * Check and set as logged in
  * @param {object} dispatch
+ * @param {boolean} setAsLoggedIn - Whether to set the state as
+ * logged in or not
+ * To prevent state update, pass it as `false`
  */
-export const checkAndSetLogin = dispatch => {
+export const checkAndSetLogin = (dispatch, setAsLoggedIn = true) => {
+  let isLoggedIn = false
   const userToken = getLocalStorage(USER_TOKEN)
   if (userToken !== null) {
     // TODO - Validate token
-    dispatch(setLoggedIn(true))
+    if (setAsLoggedIn === true) {
+      dispatch(setLoggedIn(true))
+    }
+    isLoggedIn = true
   }
+  return isLoggedIn
+}
+
+/**
+ * Check whether user is already logged in or not
+ */
+export const checkLoggedInAndRedirect = (dispatch, checkIsLoggedIn = true) => {
+  const isLoggedIn = checkAndSetLogin(dispatch, false)
+  let message = ''
+  if (checkIsLoggedIn && isLoggedIn) {
+    message = LOGGED_IN_ALREADY
+  } else if (!checkIsLoggedIn && !isLoggedIn) {
+    message = LOGGED_IN_NOT
+  } else {
+    return false
+  }
+  errorHandler(dispatch, message)
+  setTimeout(() => {
+    window.location.href = window.location.origin
+  }, 3000)
+  return true
 }
