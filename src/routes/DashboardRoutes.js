@@ -1,14 +1,20 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+import DashboardLayout from 'layouts/DashboardLayout'
+import { StyledLoader } from 'components/Common/Loaders'
+import TimeLogLayout from 'components/Dashboard/TimeLog/TimeLogLayout'
+
 import { clearMessage } from 'actions'
 
-import LogoutView from 'components/Auth/LogoutView'
-import PageNotFoundContainer from 'components/Common/PageNotFoundContainer'
-import DashboardContainer from 'components/Dashboard/DashboardContainer'
-
-import DashboardLayout from 'layouts/DashboardLayout'
+const DashboardContainer = React.lazy(() =>
+  import('components/Dashboard/DashboardContainer')
+)
+const LogoutView = React.lazy(() => import('components/Auth/LogoutView'))
+const PageNotFoundContainer = React.lazy(() =>
+  import('components/Common/PageNotFoundContainer')
+)
 
 class DashboardRoutes extends React.Component {
   renderRedirect() {
@@ -33,20 +39,27 @@ class DashboardRoutes extends React.Component {
 
   render() {
     return (
-      <DashboardLayout>
+      <DashboardLayout match={this.props.match}>
         {this.renderRedirect()}
-        <Switch>
-          <Route path="/" exact={true} component={DashboardContainer} />
-          <Route path="/logout" component={LogoutView} />
-          <Route
-            path="/link-1"
-            component={() => {
-              console.log('a')
-              return <div>TEST</div>
-            }}
-          />
-          <Route path="*" component={PageNotFoundContainer} />
-        </Switch>
+        <Suspense fallback={<StyledLoader />}>
+          <Switch>
+            <Route
+              path="/"
+              exact={true}
+              render={() => <DashboardContainer />}
+            />
+            <Route path="/logout" render={() => <LogoutView />} />
+            <Route path="/time-log" component={TimeLogLayout} />
+            {/*
+              <Route path="/time-log" render={() => <TimeLogLayout />} />
+              <>
+                <Route path="/" exact={true} render={() => <TimeLogList />} />
+                <Route path="add" render={() => <TimeLogAdd />} />
+              </>
+            </Route> */}
+            <Route path="*" render={() => <PageNotFoundContainer />} />
+          </Switch>
+        </Suspense>
       </DashboardLayout>
     )
   }

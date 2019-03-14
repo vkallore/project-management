@@ -1,12 +1,14 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
 
-import SideNav from 'components/Dashboard/Common/SideNav'
-import { TITLE_DASHBOARD } from 'constants/AppLanguage'
+import DashboardSideNav from 'components/Dashboard/Common/DashboardSideNav'
 import DashboardNavItems from 'components/Dashboard/Common/DashboardNavItems'
 import ErrorBoundary from 'components/Common/ErrorBoundary'
+import Footer from 'components/Common/Footer'
 
-const DashboardLayout = ({ children }) => {
+import { TITLE_DASHBOARD } from 'constants/AppLanguage'
+
+const DashboardLayout = ({ children, match }) => {
   return (
     <>
       <Helmet>
@@ -18,7 +20,7 @@ const DashboardLayout = ({ children }) => {
       <div className="container">
         <div className="columns">
           <div className="column column is-2">
-            <SideNav />
+            <DashboardSideNav />
           </div>
           <div className="column">
             <div className="section">
@@ -27,6 +29,7 @@ const DashboardLayout = ({ children }) => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   )
 }

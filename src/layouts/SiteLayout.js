@@ -1,13 +1,13 @@
 import React from 'react'
 
-import Nav from 'components/Common/SiteNavItems'
+import SiteNavItems from 'components/Common/SiteNavItems'
 import Footer from 'components/Common/Footer'
 
 const SiteLayout = ({ children }) => {
   return (
     <>
       <section>
-        <Nav loggedIn={false} />
+        <SiteNavItems />
       </section>
       <div className="columns">
         <div className="column">

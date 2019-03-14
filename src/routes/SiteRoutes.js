@@ -3,7 +3,7 @@ import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import SiteLayout from 'layouts/SiteLayout'
-import { StyledLoader } from '../components/Common/Loaders'
+import { StyledLoader } from 'components/Common/Loaders'
 
 import { clearMessage } from 'actions'
 

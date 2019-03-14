@@ -15,7 +15,6 @@ const AlertBox = props => {
   if ((alertText === undefined || alertText === '') && children === undefined) {
     return null
   }
-  console.log(allowMessageClear)
   let alertTextSplit = alertText.split('\n')
   const alertTextHtml = alertTextSplit.map(alertText => {
     return (
@@ -27,7 +26,6 @@ const AlertBox = props => {
       </React.Fragment>
     )
   })
-  console.log(typeof clearMessage)
   return (
     <div className={className}>
       {allowMessageClear && typeof clearMessage === 'function' && (
