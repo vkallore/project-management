@@ -10,6 +10,74 @@
 - ~~No nested Folders~~ - Best practice to follow the concept of _'Reusable components'_
 - Foldername should be in **Pascal case**. Eg: Dashboard/
 
+# nginx configuration
+
+```
+server {
+  listen 4545 default_server;
+  listen [::]:4545 default_server;
+
+  root /;
+
+  server_name _;
+
+  proxy_pass_header Authorization;
+  proxy_http_version 1.1;
+
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection 'upgrade';
+  proxy_set_header Host $host;
+  proxy_set_header X-Forwarded-Host $server_name;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-NginX-Proxy true;
+
+  proxy_cache_bypass $http_upgrade;
+
+  proxy_redirect off;
+
+  location /api/task/ {
+    proxy_pass http://192.168.1.190:8000/;
+  }
+
+  location /api/auth/ {
+
+    if ($request_method = 'OPTIONS') {
+      add_header 'Access-Control-Allow-Origin' '*';
+      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
+
+      #
+      # Custom headers and headers various browsers *should* be OK with but aren't
+      #
+      add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+
+      #
+      # Tell client that this pre-flight info is valid for 20 days
+      #
+      add_header 'Access-Control-Max-Age' 1728000;
+      add_header 'Content-Type' 'text/plain; charset=utf-8';
+      add_header 'Content-Length' 0;
+      return 204;
+    }
+
+    if ($request_method = 'POST') {
+      add_header 'Access-Control-Allow-Origin' '*';
+      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
+      add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+      add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
+    }
+    if ($request_method = 'GET') {
+      add_header 'Access-Control-Allow-Origin' '*';
+      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
+      add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+      add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
+    }
+
+    proxy_pass http://192.168.1.190:8001/;
+  }
+}
+```
+
 # Other Notes from Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

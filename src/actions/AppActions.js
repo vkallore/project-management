@@ -12,10 +12,14 @@ import {
   SET_LOGGED_IN,
   CSS_CLASS_SUCCESS
 } from 'constants/AppConstants'
-import { REGISTER_SUCCESS } from 'constants/AppMessage'
+import {
+  REGISTER_SUCCESS,
+  LOGGED_IN_ALREADY,
+  LOGGED_IN_NOT
+} from 'constants/AppMessage'
 import { FORM_LOGIN, FORM_REGISTER } from 'constants/AppForms'
 import { errorHandler, clearMessage, dispatchMessage } from 'actions'
-import { LOGGED_IN_ALREADY, LOGGED_IN_NOT } from '../constants/AppMessage'
+import { doLogin } from 'services/auth'
 
 /**
  * Show the modal
@@ -60,7 +64,7 @@ export const login = (username, password) => {
         return []
       }
 
-      const response = await axios.post('/user/login', newFormData)
+      const response = await doLogin({ username, password }) //axios.post('/user/login', newFormData)
 
       dispatch({ type: RESET_FORM, formType: FORM_LOGIN })
       dispatch(setLoggedIn(true))
