@@ -8,3 +8,7 @@ export const LOGGED_IN_ALREADY =
   'You are already logged in on another tab/window. Refreshing the page.'
 export const LOGGED_IN_NOT =
   'You are not logged in! Or your session timed out. Refreshing the page.'
+
+/* Dashboard */
+/* Time Log */
+export const TIME_LOG_ADD_SUCCESS = 'Time log has been added successfully.'

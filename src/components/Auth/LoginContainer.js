@@ -3,13 +3,13 @@ import { connect } from 'react-redux'
 import { withRouter, Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
-import { login } from 'actions/AppActions'
+import { login } from 'actions/AuthActions'
 
 import LoginForm from 'components/Auth/LoginForm'
 
 import { FORM_LOGIN } from 'constants/AppForms'
 import { TITLE_LOGIN, TEXT_LOGIN } from 'constants/AppLanguage'
-import { setUserData } from 'actions/AppActions'
+import { setUserData } from 'actions'
 
 import { clearMessage } from 'actions'
 
@@ -18,7 +18,10 @@ const AlertBox = React.lazy(() => import('components/Common/AlertBox'))
 class LoginContainer extends React.Component {
   handleSubmit = async formFields => {
     const { login, history } = this.props
-    const response = await login(formFields.username, formFields.password)
+    const response = await login({
+      username: formFields.username,
+      password: formFields.password
+    })
     if (response.token) {
       setUserData(response.token, response.tokenExpiry, response.refreshToken)
       history.push('/')

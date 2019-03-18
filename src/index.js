@@ -11,7 +11,7 @@ import * as serviceWorker from 'serviceWorker'
 import 'bulma/css/bulma.css'
 import 'assets/css/bulmaswatch.css'
 import 'assets/css/custom.scss'
-import { checkAndSetLogin } from 'actions/AppActions'
+import { checkAndSetLogin } from 'actions'
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 

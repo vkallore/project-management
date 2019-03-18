@@ -1,5 +1,8 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
+
+import { TITLE_TIME_LOG } from 'constants/AppLanguage'
 
 const TimeLogList = React.lazy(() =>
   import('components/Dashboard/TimeLog/TimeLogList')
@@ -15,6 +18,9 @@ const TimeLogLayout = props => {
   const { match } = props
   return (
     <>
+      <Helmet>
+        <title>{TITLE_TIME_LOG}</title>
+      </Helmet>
       <Switch>
         <Route
           path={`${match.url}/`}

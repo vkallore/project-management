@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter, Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
-import { register } from 'actions/AppActions'
+import { register } from 'actions/AuthActions'
 
 import RegisterForm from 'components/Site/Register/RegisterForm'
 
@@ -17,7 +17,7 @@ const AlertBox = React.lazy(() => import('components/Common/AlertBox'))
 class RegisterContainer extends React.Component {
   handleSubmit = async formFields => {
     const { register } = this.props
-    register(formFields.username, formFields.password)
+    register(formFields)
   }
 
   render() {

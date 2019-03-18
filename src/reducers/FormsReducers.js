@@ -1,5 +1,5 @@
 import { RESET_FORM, CHANGE_FORM } from 'constants/AppConstants'
-import { FORM_LOGIN, FORM_REGISTER } from 'constants/AppForms'
+import { FORM_LOGIN, FORM_REGISTER, FORM_TIME_LOG } from 'constants/AppForms'
 
 const initialState = {
   login: {
@@ -8,9 +8,14 @@ const initialState = {
   },
   register: {
     username: '',
-    password: '',
-    confirm_password: '',
-    phone_number: ''
+    password: ''
+  },
+  timeLog: {
+    category: '',
+    duration: '',
+    taskName: '',
+    startDate: '',
+    startTime: ''
   }
 }
 
@@ -37,6 +42,11 @@ const resetForm = (state, action) => {
         ...state,
         register: initialState.register
       }
+    case FORM_TIME_LOG:
+      return {
+        ...state,
+        timeLog: initialState.timeLog
+      }
     default:
       break
   }
@@ -53,6 +63,11 @@ const updateForm = (state, action) => {
       return {
         ...state,
         register: { ...state.register, ...action.newState }
+      }
+    case FORM_TIME_LOG:
+      return {
+        ...state,
+        timeLog: { ...state.timeLog, ...action.newState }
       }
     default:
       return state

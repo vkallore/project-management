@@ -12,7 +12,82 @@
 
 # nginx configuration
 
+Create New Directory for PMT related config
+
 ```
+$ sudo mkdir /etc/nginx/pmt-config
+$ cd pmt-config
+$ touch pmt-proxy-forward.conf pmt-proxy-options.conf pmt-proxy-post.conf pmt-proxy-get.conf
+# and paste the content to it
+```
+
+**pmt-proxy-forward.conf**
+
+```
+proxy_http_version 1.1;
+
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection 'upgrade';
+proxy_set_header Host $host;
+proxy_set_header X-Forwarded-Host $server_name;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-NginX-Proxy true;
+proxy_set_header X-Forwarded-Proto	$scheme;
+proxy_set_header X-Forwarded-Port	$server_port;
+
+proxy_redirect off;
+```
+
+**pmt-proxy-options.conf**
+
+```
+if ($request_method = 'OPTIONS') {
+  add_header Access-Control-Allow-Origin '*';
+  add_header Access-Control-Allow-Credentials 'true';
+  add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS, PUT, DELETE';
+
+  #
+  # Custom headers and headers various browsers *should* be OK with but aren't
+  #
+  add_header Access-Control-Allow-Headers 'Authorization,Accept,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,Range,User-Agent,X-Mx-ReqToken,X-Requested-With';
+
+  #
+  # Tell client that this pre-flight info is valid for 20 days
+  #
+  add_header Access-Control-Max-Age 1728000;
+  add_header Content-Type 'text/plain; charset=utf-8';
+  add_header Content-Length 0;
+  return 204;
+}
+```
+
+**pmt-proxy-post.conf**
+
+```
+if ($request_method = 'POST') {
+  add_header Access-Control-Allow-Origin '*';
+  add_header Access-Control-Allow-Credentials 'true';
+  add_header Access-Control-Expose-Headers 'Content-Length,Content-Range';
+}
+```
+
+**pmt-proxy-get.conf**
+
+```
+
+if ($request_method = 'GET') {
+  add_header Access-Control-Allow-Origin '*';
+  add_header Access-Control-Allow-Credentials 'true';
+  add_header Access-Control-Expose-Headers 'Content-Length,Content-Range';
+}
+
+```
+
+**website.conf**
+
+```
+
 server {
   listen 4545 default_server;
   listen [::]:4545 default_server;
@@ -21,61 +96,35 @@ server {
 
   server_name _;
 
-  proxy_pass_header Authorization;
-  proxy_http_version 1.1;
-
-  proxy_set_header Upgrade $http_upgrade;
-  proxy_set_header Connection 'upgrade';
-  proxy_set_header Host $host;
-  proxy_set_header X-Forwarded-Host $server_name;
-  proxy_set_header X-Real-IP $remote_addr;
-  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  proxy_set_header X-NginX-Proxy true;
+  include pmt-config/pmt-proxy-forward.conf;
 
   proxy_cache_bypass $http_upgrade;
 
   proxy_redirect off;
 
   location /api/task/ {
+
+    include pmt-config/pmt-proxy-options.conf;
+
+    include pmt-config/pmt-proxy-post.conf;
+
+    include pmt-config/pmt-proxy-get.conf;
+
     proxy_pass http://192.168.1.190:8000/;
   }
 
   location /api/auth/ {
 
-    if ($request_method = 'OPTIONS') {
-      add_header 'Access-Control-Allow-Origin' '*';
-      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
+    include pmt-config/pmt-proxy-options.conf;
 
-      #
-      # Custom headers and headers various browsers *should* be OK with but aren't
-      #
-      add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+    include pmt-config/pmt-proxy-post.conf;
 
-      #
-      # Tell client that this pre-flight info is valid for 20 days
-      #
-      add_header 'Access-Control-Max-Age' 1728000;
-      add_header 'Content-Type' 'text/plain; charset=utf-8';
-      add_header 'Content-Length' 0;
-      return 204;
-    }
-
-    if ($request_method = 'POST') {
-      add_header 'Access-Control-Allow-Origin' '*';
-      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
-      add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
-      add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
-    }
-    if ($request_method = 'GET') {
-      add_header 'Access-Control-Allow-Origin' '*';
-      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
-      add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
-      add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
-    }
+    include pmt-config/pmt-proxy-get.conf;
 
     proxy_pass http://192.168.1.190:8001/;
   }
 }
+
 ```
 
 # Other Notes from Create React App
@@ -148,3 +197,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+```
+
+```

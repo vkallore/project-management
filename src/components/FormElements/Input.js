@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { changeForm } from 'actions/AppActions'
+import { changeFormValue } from 'actions'
 
 class Input extends React.Component {
   constructor(props) {
@@ -119,7 +119,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  onChange: (formModel, values) => dispatch(changeForm(formModel, values))
+  onChange: (formModel, values) => dispatch(changeFormValue(formModel, values))
 })
 
 export default connect(

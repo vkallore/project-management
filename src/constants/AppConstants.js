@@ -22,6 +22,5 @@ export const VALID_PATTERN_PASSWORD =
   '(?=^.{8,}$)((?=.*d)|(?=.*W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$'
 
 /* Dashboard Menu Items */
-export const MENU_GROUP_TIME_LOG = 'Time Log'
 export const MENU_LIST = 'List'
 export const MENU_ADD = 'Add'
