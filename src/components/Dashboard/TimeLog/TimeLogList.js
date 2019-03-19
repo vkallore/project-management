@@ -14,6 +14,8 @@ import { SvgLoader } from 'components/Common/Loaders'
 
 import { queryParse, stringify } from 'services'
 
+import { toLocaleString } from 'helpers'
+
 const AlertBox = React.lazy(() => import('components/Common/AlertBox'))
 
 class TimeLogList extends React.Component {
@@ -48,7 +50,7 @@ class TimeLogList extends React.Component {
       userTimeLogs: userTimeLogResponse.data || [],
       totalRecords: totalRecords,
       currentPage: currentPage,
-      totalPages: totalRecords / perPage
+      totalPages: Math.ceil(totalRecords / perPage)
     })
   }
 
@@ -99,22 +101,14 @@ class TimeLogList extends React.Component {
     const htmlUserTimeLogs =
       userTimeLogs.length > 0 ? (
         userTimeLogs.map(userTimeLog => {
-          return (
-            <div key={userTimeLog.id}>
-              category: {userTimeLog.category} <br />
-              createdAt: {userTimeLog.createdAt} <br />
-              createdBy: {userTimeLog.createdBy} <br />
-              durationInMin: {userTimeLog.durationInMin} <br />
-              endTime: {userTimeLog.endTime} <br />
-              startTime: {userTimeLog.startTime} <br />
-              taskId: {userTimeLog.taskId} <br />
-              taskName: {userTimeLog.taskName} <br />
-              <br />
-            </div>
-          )
+          return <TimeLog key={userTimeLog.id} timeLog={userTimeLog} />
         })
       ) : (
-        <div>No records found</div>
+        <tr>
+          <th colSpan={5} className="has-text-centered">
+            No records found
+          </th>
+        </tr>
       )
 
     return (
@@ -125,8 +119,23 @@ class TimeLogList extends React.Component {
         <h1 className="title">{TEXT_TIME_LOG}</h1>
 
         {/* <a onClick={() => this.paginate(currentPage)}>Next</a> */}
-        {htmlUserTimeLogs}
-
+        <div className="table__wrapper">
+          <table className="table responsive-table">
+            <thead>
+              <tr className="has-text-centered">
+                <th rowSpan={2}>#</th>
+                <th rowSpan={2}>Category</th>
+                <th rowSpan={2}>Task</th>
+                <th colSpan={2}>Time</th>
+              </tr>
+              <tr>
+                <th>Start</th>
+                <th>End</th>
+              </tr>
+            </thead>
+            <tbody>{htmlUserTimeLogs}</tbody>
+          </table>
+        </div>
         <Pagination
           current={currentPage}
           total={totalPages}
@@ -144,6 +153,28 @@ class TimeLogList extends React.Component {
       </>
     )
   }
+}
+
+const TimeLog = ({ timeLog }) => {
+  /* category: {userTimeLog.category} <br />
+              durationInMin: {userTimeLog.durationInMin} <br />
+              endTime: {userTimeLog.endTime} <br />
+              startTime: {userTimeLog.startTime} <br />
+              taskId: {userTimeLog.taskId} <br />
+              taskName: {userTimeLog.taskName} <br />
+              <br />
+            </TimeLog> */
+  const timeLogStartTime = toLocaleString(timeLog.startTime)
+  const timeLogEndTime = toLocaleString(timeLog.endTime)
+  return (
+    <tr>
+      <td>#</td>
+      <td>{timeLog.category}</td>
+      <td>{timeLog.taskName}</td>
+      <td>{timeLogStartTime}</td>
+      <td>{timeLogEndTime}</td>
+    </tr>
+  )
 }
 
 const mapStateToProps = state => ({

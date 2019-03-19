@@ -7,6 +7,8 @@ import {
   checkLoggedInAndRedirect
 } from 'actions'
 
+import { toISOString } from 'helpers'
+
 import { CSS_CLASS_SUCCESS } from 'constants/AppConstants'
 import { TIME_LOG_ADD_SUCCESS } from 'constants/AppMessage'
 import { FORM_TIME_LOG } from 'constants/AppForms'
@@ -28,9 +30,10 @@ export const addTimeLog = ({
     try {
       dispatch(setAjaxProcessing(true))
 
-      const isoStartDateTime = new Date(
-        `${startDate} ${startTime}`
-      ).toISOString()
+      const isoStartDateTime = toISOString({
+        date: startDate,
+        time: startTime
+      })
       let newFormData = {
         category,
         startTime: isoStartDateTime,
