@@ -9,7 +9,7 @@ import {
 
 import Input from 'components/FormElements/Input'
 import Button from 'components/FormElements/Button'
-import { StyledLoader } from 'components/Common/Loaders'
+import { SvgLoader } from 'components/Common/Loaders'
 
 import { TEXT_ADD } from 'constants/AppLanguage'
 import {
@@ -108,7 +108,7 @@ const TimeLogForm = props => {
       <div className="buttons is-centered">
         <Button text={TEXT_ADD} className="is-info" disabled={ajaxProcessing} />
       </div>
-      <div className="ajaxloader">{!ajaxProcessing && <StyledLoader />}</div>
+      <div className="ajaxloader">{ajaxProcessing && <SvgLoader />}</div>
     </form>
   )
 }

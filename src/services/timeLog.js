@@ -11,3 +11,12 @@ export const saveTimeLog = ({ ...formData }) => {
     }
   })
 }
+
+export const getTimeLog = ({ ...params }) => {
+  return request.get('/task/time-log/', {
+    params: params,
+    headers: {
+      Authorization: getLocalStorage(USER_TOKEN)
+    }
+  })
+}

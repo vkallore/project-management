@@ -10,7 +10,7 @@ import {
 import { CSS_CLASS_SUCCESS } from 'constants/AppConstants'
 import { TIME_LOG_ADD_SUCCESS } from 'constants/AppMessage'
 import { FORM_TIME_LOG } from 'constants/AppForms'
-import { saveTimeLog } from 'services/timeLog'
+import { saveTimeLog, getTimeLog } from 'services/timeLog'
 
 /**
  * Add Time log
@@ -25,17 +25,19 @@ export const addTimeLog = ({
   taskName
 }) => {
   return async dispatch => {
-    dispatch(setAjaxProcessing(true))
-
-    const isoStartDateTime = new Date(`${startDate} ${startTime}`).toISOString()
-    let newFormData = {
-      category,
-      startTime: isoStartDateTime,
-      durationInMin: duration,
-      taskName
-    }
-
     try {
+      dispatch(setAjaxProcessing(true))
+
+      const isoStartDateTime = new Date(
+        `${startDate} ${startTime}`
+      ).toISOString()
+      let newFormData = {
+        category,
+        startTime: isoStartDateTime,
+        durationInMin: duration,
+        taskName
+      }
+
       dispatch(clearMessage())
 
       /**
@@ -60,6 +62,25 @@ export const addTimeLog = ({
         )
       }
       return []
+    } catch (error) {
+      errorHandler(dispatch, error, true)
+      dispatch(setAjaxProcessing(false))
+      return []
+    }
+  }
+}
+
+export const timeLogs = ({ offset, perPage }) => {
+  return async dispatch => {
+    try {
+      dispatch(setAjaxProcessing(true))
+
+      const params = { offset, limit: perPage }
+      const response = await getTimeLog(params)
+
+      dispatch(setAjaxProcessing(false))
+
+      return response.data
     } catch (error) {
       errorHandler(dispatch, error, true)
       dispatch(setAjaxProcessing(false))

@@ -9,7 +9,7 @@ import {
 
 import Input from 'components/FormElements/Input'
 import Button from 'components/FormElements/Button'
-import { StyledLoader } from 'components/Common/Loaders'
+import { SvgLoader } from 'components/Common/Loaders'
 
 import { VALID_PATTERN_PASSWORD } from 'constants/AppConstants'
 import { TEXT_REGISTER } from 'constants/AppLanguage'
@@ -73,7 +73,7 @@ const RegisterForm = props => {
           disabled={ajaxProcessing}
         />
       </div>
-      <div className="ajaxloader">{!ajaxProcessing && <StyledLoader />}</div>
+      <div className="ajaxloader">{ajaxProcessing && <SvgLoader />}</div>
     </form>
   )
 }

@@ -3,7 +3,7 @@ import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import SiteLayout from 'layouts/SiteLayout'
-import { StyledLoader } from 'components/Common/Loaders'
+import { ContentLoader } from 'components/Common/Loaders'
 
 import { clearMessage } from 'actions'
 
@@ -45,7 +45,7 @@ class SiteRoutes extends React.Component {
     return (
       <SiteLayout>
         {this.renderRedirect()}
-        <Suspense fallback={<StyledLoader />}>
+        <Suspense fallback={<ContentLoader />}>
           <Switch>
             <Route exact={true} path="/" render={() => <HomeContainer />} />
             <Route path="/login" render={() => <LoginContainer />} />

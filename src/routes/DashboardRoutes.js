@@ -3,7 +3,7 @@ import { Route, Switch, withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import DashboardLayout from 'layouts/DashboardLayout'
-import { StyledLoader } from 'components/Common/Loaders'
+import { ContentLoader } from 'components/Common/Loaders'
 import TimeLogLayout from 'components/Dashboard/TimeLog/TimeLogLayout'
 
 import { clearMessage } from 'actions'
@@ -41,7 +41,7 @@ class DashboardRoutes extends React.Component {
     return (
       <DashboardLayout match={this.props.match}>
         {this.renderRedirect()}
-        <Suspense fallback={<StyledLoader />}>
+        <Suspense fallback={<ContentLoader />}>
           <Switch>
             <Route
               path="/"
