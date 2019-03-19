@@ -1,3 +1,5 @@
+import { isTokenAlive, getFreshToken } from 'services/auth'
+
 import {
   SHOW_MODAL,
   HIDE_MODAL,
@@ -173,10 +175,11 @@ export const setLoggedIn = loggedIn => {
 
 /**
  * Set user data to local storage
- * @param  {...any} args
+ * @param  {...any} tokenData
  */
-export const setUserData = (...args) => {
-  const [token, tokenExpiry, refreshToken] = args
+export const setUserData = ({ ...tokenData }) => {
+  const { token, tokenExpiry, refreshToken } = tokenData
+
   setLocalStorage(USER_TOKEN, token)
   setLocalStorage(USER_TOKEN_EXPIRY, tokenExpiry)
   setLocalStorage(USER_REFRESH_TOKEN, refreshToken)
@@ -228,15 +231,34 @@ export const getLocalStorage = key => {
  * logged in or not
  * To prevent state update, pass it as `false`
  */
-export const checkAndSetLogin = (dispatch, setAsLoggedIn = true) => {
+export const checkAndSetLogin = async (dispatch, setAsLoggedIn = true) => {
   let isLoggedIn = false
   const userToken = getLocalStorage(USER_TOKEN)
   if (userToken !== null) {
-    // TODO - Validate token
-    if (setAsLoggedIn === true) {
-      dispatch(setLoggedIn(true))
+    try {
+      /* Check whether the token is alive */
+      const response = await isTokenAlive()
+
+      if (response.data === 'alive') {
+        isLoggedIn = true
+      }
+    } catch (err) {
+      /* Refresh token */
+      try {
+        const response = await getFreshToken()
+
+        if (response.data.token) {
+          isLoggedIn = true
+          setUserData(response.data)
+        }
+      } catch (err) {
+        console.log(err)
+      }
     }
-    isLoggedIn = true
+
+    if (setAsLoggedIn === true) {
+      dispatch(setLoggedIn(isLoggedIn))
+    }
   }
   return isLoggedIn
 }

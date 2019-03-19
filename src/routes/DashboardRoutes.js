@@ -19,6 +19,7 @@ const PageNotFoundContainer = React.lazy(() =>
 class DashboardRoutes extends React.Component {
   renderRedirect() {
     const { loggedIn, history } = this.props
+    console.log(loggedIn)
     if (loggedIn !== true && history.location.pathname !== '/') {
       return <Redirect to="/" />
     }

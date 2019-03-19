@@ -23,7 +23,7 @@ class LoginContainer extends React.Component {
       password: formFields.password
     })
     if (response.token) {
-      setUserData(response.token, response.tokenExpiry, response.refreshToken)
+      setUserData(response)
       history.push('/')
     }
   }
