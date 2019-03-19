@@ -59,12 +59,14 @@ export const errorHandler = (dispatch, error, allowMessageClose = false) => {
       /* Handle any other error */
     } else if (typeof error === 'string') {
       message = error
-    } else {
+    }
+    if (message === '' || message === undefined) {
       message = API_COMMON_ERROR
     }
   } catch (err) {
-    message = 'Error occurred!'
+    message = API_COMMON_ERROR
   }
+
   dispatchMessage(
     dispatch,
     message,

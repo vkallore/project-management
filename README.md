@@ -43,7 +43,7 @@ proxy_redirect off;
 
 ```
 if ($request_method = 'OPTIONS') {
-  add_header Access-Control-Allow-Origin '*';
+  add_header Access-Control-Allow-Origin '*' always; #'always' can be used only if nginx >= 1.7.5
   add_header Access-Control-Allow-Credentials 'true';
   add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS, PUT, DELETE';
 
@@ -66,7 +66,7 @@ if ($request_method = 'OPTIONS') {
 
 ```
 if ($request_method = 'POST') {
-  add_header Access-Control-Allow-Origin '*';
+  add_header Access-Control-Allow-Origin '*' always; #'always' can be used only if nginx >= 1.7.5
   add_header Access-Control-Allow-Credentials 'true';
   add_header Access-Control-Expose-Headers 'Content-Length,Content-Range';
 }
@@ -77,7 +77,7 @@ if ($request_method = 'POST') {
 ```
 
 if ($request_method = 'GET') {
-  add_header Access-Control-Allow-Origin '*';
+  add_header Access-Control-Allow-Origin '*' always; #'always' can be used only if nginx >= 1.7.5
   add_header Access-Control-Allow-Credentials 'true';
   add_header Access-Control-Expose-Headers 'Content-Length,Content-Range';
 }
