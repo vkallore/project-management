@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import 'react-bulma-components/dist/react-bulma-components.min.css'
+import Pagination from 'react-bulma-components/lib/components/pagination'
 
 import { timeLogs } from 'actions/TimeLogActions'
 
@@ -21,7 +23,8 @@ class TimeLogList extends React.Component {
       userTimeLogs: [],
       totalRecords: 0,
       perPage: 3,
-      currentPage: 1
+      currentPage: 0,
+      totalPages: 0
     }
     this.getData = this.getData.bind(this)
     this.paginate = this.paginate.bind(this)
@@ -33,18 +36,19 @@ class TimeLogList extends React.Component {
 
     let { page } = queryParse()
 
-    let { currentPage } = this.state
-
-    currentPage = parseInt(page === undefined || page < 1 ? currentPage : page)
+    const currentPage = parseInt(page === undefined || page < 1 ? 1 : page)
 
     const offset = (currentPage - 1) * perPage
 
     const userTimeLogResponse = await timeLogs({ offset, perPage })
 
+    const totalRecords = userTimeLogResponse.totalRecords || 0
+
     this.setState({
       userTimeLogs: userTimeLogResponse.data || [],
-      totalRecords: userTimeLogResponse.totalRecords || 0,
-      currentPage: currentPage + 1
+      totalRecords: totalRecords,
+      currentPage: currentPage,
+      totalPages: totalRecords / perPage
     })
   }
 
@@ -90,23 +94,28 @@ class TimeLogList extends React.Component {
       clearMessage
     } = this.props
 
-    const { userTimeLogs, currentPage } = this.state
+    const { userTimeLogs, currentPage, totalPages } = this.state
 
-    const htmlUserTimeLogs = userTimeLogs.map(userTimeLog => {
-      return (
-        <div key={userTimeLog.id}>
-          category: {userTimeLog.category} <br />
-          createdAt: {userTimeLog.createdAt} <br />
-          createdBy: {userTimeLog.createdBy} <br />
-          durationInMin: {userTimeLog.durationInMin} <br />
-          endTime: {userTimeLog.endTime} <br />
-          startTime: {userTimeLog.startTime} <br />
-          taskId: {userTimeLog.taskId} <br />
-          taskName: {userTimeLog.taskName} <br />
-          <br />
-        </div>
+    const htmlUserTimeLogs =
+      userTimeLogs.length > 0 ? (
+        userTimeLogs.map(userTimeLog => {
+          return (
+            <div key={userTimeLog.id}>
+              category: {userTimeLog.category} <br />
+              createdAt: {userTimeLog.createdAt} <br />
+              createdBy: {userTimeLog.createdBy} <br />
+              durationInMin: {userTimeLog.durationInMin} <br />
+              endTime: {userTimeLog.endTime} <br />
+              startTime: {userTimeLog.startTime} <br />
+              taskId: {userTimeLog.taskId} <br />
+              taskName: {userTimeLog.taskName} <br />
+              <br />
+            </div>
+          )
+        })
+      ) : (
+        <div>No records found</div>
       )
-    })
 
     return (
       <>
@@ -114,8 +123,17 @@ class TimeLogList extends React.Component {
           <title>{TITLE_TIME_LOG}</title>
         </Helmet>
         <h1 className="title">{TEXT_TIME_LOG}</h1>
-        <a onClick={() => this.paginate(currentPage)}>Next</a>
+
+        {/* <a onClick={() => this.paginate(currentPage)}>Next</a> */}
         {htmlUserTimeLogs}
+
+        <Pagination
+          current={currentPage}
+          total={totalPages}
+          delta={3}
+          autoHide={false}
+          onChange={page => this.paginate(page)}
+        />
         <AlertBox
           alertText={apiResponse}
           alertType={apiResponseType}
