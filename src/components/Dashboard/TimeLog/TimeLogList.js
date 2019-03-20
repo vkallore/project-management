@@ -2,10 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter, Redirect } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import 'react-bulma-components/dist/react-bulma-components.min.css'
 import Pagination from 'react-bulma-components/lib/components/pagination'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import 'react-bulma-components/dist/react-bulma-components.min.css'
 
-import { timeLogs } from 'actions/TimeLogActions'
+import { timeLogs, deleteTimeLog } from 'actions/TimeLogActions'
 
 import { TEXT_TIME_LOG, TITLE_TIME_LOG } from 'constants/AppLanguage'
 import { clearMessage } from 'actions'
@@ -24,12 +26,13 @@ class TimeLogList extends React.Component {
     this.state = {
       userTimeLogs: [],
       totalRecords: 0,
-      perPage: 3,
+      perPage: 10,
       currentPage: 0,
       totalPages: 0
     }
     this.getData = this.getData.bind(this)
     this.paginate = this.paginate.bind(this)
+    this.deleteTimeLog = this.deleteTimeLog.bind(this)
   }
 
   getData = async () => {
@@ -54,6 +57,14 @@ class TimeLogList extends React.Component {
     })
   }
 
+  deleteTimeLog = async timeLogId => {
+    const { deleteTimeLog } = this.props
+    const response = await deleteTimeLog(timeLogId)
+    if (response.code === '200') {
+      await this.getData()
+    }
+  }
+
   paginate(page) {
     const { history } = this.props
     let query = queryParse()
@@ -68,7 +79,7 @@ class TimeLogList extends React.Component {
     history.push({ search: queryString })
 
     this.setState({
-      currentPage: page + 1
+      currentPage: page
     })
   }
 
@@ -96,16 +107,25 @@ class TimeLogList extends React.Component {
       clearMessage
     } = this.props
 
-    const { userTimeLogs, currentPage, totalPages } = this.state
+    const { userTimeLogs, currentPage, totalPages, perPage } = this.state
 
     const htmlUserTimeLogs =
       userTimeLogs.length > 0 ? (
-        userTimeLogs.map(userTimeLog => {
-          return <TimeLog key={userTimeLog.id} timeLog={userTimeLog} />
+        userTimeLogs.map((userTimeLog, index) => {
+          return (
+            <TimeLog
+              key={userTimeLog.id}
+              timeLog={userTimeLog}
+              deleteTimeLog={this.deleteTimeLog}
+              currentPage={currentPage}
+              perPage={perPage}
+              index={index}
+            />
+          )
         })
       ) : (
         <tr>
-          <th colSpan={5} className="has-text-centered">
+          <th colSpan={6} className="has-text-centered">
             No records found
           </th>
         </tr>
@@ -118,17 +138,17 @@ class TimeLogList extends React.Component {
         </Helmet>
         <h1 className="title">{TEXT_TIME_LOG}</h1>
 
-        {/* <a onClick={() => this.paginate(currentPage)}>Next</a> */}
         <div className="table__wrapper">
           <table className="table responsive-table">
             <thead>
-              <tr className="has-text-centered">
+              <tr className="has-text-centered is-vertical-center">
                 <th rowSpan={2}>#</th>
                 <th rowSpan={2}>Category</th>
                 <th rowSpan={2}>Task</th>
                 <th colSpan={2}>Time</th>
+                <th rowSpan={2}>Action</th>
               </tr>
-              <tr>
+              <tr className="has-text-centered is-vertical-center">
                 <th>Start</th>
                 <th>End</th>
               </tr>
@@ -136,12 +156,15 @@ class TimeLogList extends React.Component {
             <tbody>{htmlUserTimeLogs}</tbody>
           </table>
         </div>
+
         <Pagination
           current={currentPage}
           total={totalPages}
           delta={3}
           autoHide={false}
-          onChange={page => this.paginate(page)}
+          {...(!ajaxProcessing
+            ? { onChange: page => this.paginate(page) }
+            : null)}
         />
         <AlertBox
           alertText={apiResponse}
@@ -155,24 +178,23 @@ class TimeLogList extends React.Component {
   }
 }
 
-const TimeLog = ({ timeLog }) => {
-  /* category: {userTimeLog.category} <br />
-              durationInMin: {userTimeLog.durationInMin} <br />
-              endTime: {userTimeLog.endTime} <br />
-              startTime: {userTimeLog.startTime} <br />
-              taskId: {userTimeLog.taskId} <br />
-              taskName: {userTimeLog.taskName} <br />
-              <br />
-            </TimeLog> */
+const TimeLog = props => {
+  const { timeLog, deleteTimeLog, currentPage, perPage, index } = props
   const timeLogStartTime = toLocaleString(timeLog.startTime)
   const timeLogEndTime = toLocaleString(timeLog.endTime)
+  const timeLogId = timeLog.id
   return (
-    <tr>
-      <td>#</td>
+    <tr className="has-text-centered">
+      <td>{perPage * (currentPage - 1) + index + 1}</td>
       <td>{timeLog.category}</td>
       <td>{timeLog.taskName}</td>
       <td>{timeLogStartTime}</td>
       <td>{timeLogEndTime}</td>
+      <td>
+        <a onClick={() => deleteTimeLog(timeLogId)}>
+          <FontAwesomeIcon icon={faTimes} />
+        </a>
+      </td>
     </tr>
   )
 }
@@ -188,6 +210,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { timeLogs, clearMessage }
+    { timeLogs, clearMessage, deleteTimeLog }
   )(TimeLogList)
 )

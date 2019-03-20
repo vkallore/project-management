@@ -20,3 +20,11 @@ export const getTimeLog = ({ ...params }) => {
     }
   })
 }
+
+export const timeLogDelete = timeLogId => {
+  return request.delete(`/task/time-log/${timeLogId}`, {
+    headers: {
+      Authorization: getLocalStorage(USER_TOKEN)
+    }
+  })
+}

@@ -16,7 +16,7 @@
 
 /* Fixed Alert Box */
 .fixed-notification {
-  position: fixed;
+  position: fixed !important;
   bottom: 1rem;
   right: 1rem;
   min-width: 25rem;
@@ -51,13 +51,21 @@
   will-change: transform;
 }
 
-/* Responsive Table */
+/* Table */
+/* Responsive */
 .table__wrapper {
   overflow-x: auto;
 }
-
 .responsive-table {
   width: 100%;
 }
-
-/* EO Responsive Table */
+/* EO Responsive */
+.has-text-centered > th,
+.has-text-centered > td {
+  text-align: center !important;
+}
+.is-vertical-center,
+.is-vertical-center > th {
+  vertical-align: middle !important;
+}
+/* Table */

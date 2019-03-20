@@ -228,20 +228,24 @@ export const getLocalStorage = key => {
  * Check and set as logged in
  * @param {object} dispatch
  * @param {boolean} setAsLoggedIn - Whether to set the state as
+ * @param {boolean} checkTokenIsAlive - Check whether user's token is alive/active
  * logged in or not
  * To prevent state update, pass it as `false`
  */
-export const checkAndSetLogin = async (dispatch, setAsLoggedIn = true) => {
+export const checkAndSetLogin = async (
+  dispatch,
+  setAsLoggedIn = true,
+  checkTokenIsAlive = false
+) => {
   let isLoggedIn = false
   const userToken = getLocalStorage(USER_TOKEN)
   if (userToken !== null) {
     try {
-      /* Check whether the token is alive */
-      const response = await isTokenAlive()
-
-      if (response.data === 'alive') {
-        isLoggedIn = true
+      if (checkTokenIsAlive === true) {
+        /* Check whether the token is alive */
+        await isTokenAlive()
       }
+      isLoggedIn = true
     } catch (err) {
       /* Refresh token */
       try {
@@ -265,13 +269,19 @@ export const checkAndSetLogin = async (dispatch, setAsLoggedIn = true) => {
 
 /**
  * Check whether user is already logged in or not
+ * @param {*} dispatch
+ * @param {*} isAlreadyLoggedIn - Whether to check already logged in status or not
+ * @return boolean
  */
-export const checkLoggedInAndRedirect = (dispatch, checkIsLoggedIn = true) => {
-  const isLoggedIn = checkAndSetLogin(dispatch, false)
+export const checkLoggedInAndRedirect = (
+  dispatch,
+  isAlreadyLoggedIn = true
+) => {
+  const isLoggedIn = checkAndSetLogin(dispatch, false, isAlreadyLoggedIn)
   let message = ''
-  if (checkIsLoggedIn && isLoggedIn) {
+  if (isAlreadyLoggedIn && isLoggedIn) {
     message = LOGGED_IN_ALREADY
-  } else if (!checkIsLoggedIn && !isLoggedIn) {
+  } else if (!isAlreadyLoggedIn && !isLoggedIn) {
     message = LOGGED_IN_NOT
   } else {
     return false

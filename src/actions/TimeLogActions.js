@@ -1,3 +1,5 @@
+import { saveTimeLog, getTimeLog, timeLogDelete } from 'services/timeLog'
+
 import {
   errorHandler,
   clearMessage,
@@ -10,9 +12,11 @@ import {
 import { toISOString } from 'helpers'
 
 import { CSS_CLASS_SUCCESS } from 'constants/AppConstants'
-import { TIME_LOG_ADD_SUCCESS } from 'constants/AppMessage'
+import {
+  TIME_LOG_ADD_SUCCESS,
+  TIME_LOG_DELETE_SUCCESS
+} from 'constants/AppMessage'
 import { FORM_TIME_LOG } from 'constants/AppForms'
-import { saveTimeLog, getTimeLog } from 'services/timeLog'
 
 /**
  * Add Time log
@@ -78,10 +82,53 @@ export const timeLogs = ({ offset, perPage }) => {
     try {
       dispatch(setAjaxProcessing(true))
 
+      /**
+       * Check whether user is already logged in or not
+       */
+      const isRedirecting = checkLoggedInAndRedirect(dispatch, false)
+      if (isRedirecting) {
+        return []
+      }
+
       const params = { offset, limit: perPage }
       const response = await getTimeLog(params)
 
       dispatch(setAjaxProcessing(false))
+
+      return response.data
+    } catch (error) {
+      errorHandler(dispatch, error, true)
+      dispatch(setAjaxProcessing(false))
+      return []
+    }
+  }
+}
+
+export const deleteTimeLog = timeLogId => {
+  return async dispatch => {
+    try {
+      dispatch(setAjaxProcessing(true))
+
+      dispatch(clearMessage())
+
+      /**
+       * Check whether user is already logged in or not
+       */
+      const isRedirecting = checkLoggedInAndRedirect(dispatch, false)
+      if (isRedirecting) {
+        return []
+      }
+
+      const response = await timeLogDelete(timeLogId)
+
+      dispatch(setAjaxProcessing(false))
+      dispatchMessage(
+        dispatch,
+        TIME_LOG_DELETE_SUCCESS,
+        null,
+        CSS_CLASS_SUCCESS,
+        true
+      )
 
       return response.data
     } catch (error) {
