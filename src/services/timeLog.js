@@ -28,3 +28,11 @@ export const timeLogDelete = timeLogId => {
     }
   })
 }
+
+export const getCategories = () => {
+  return request.get('/task/time-log/categories/', {
+    headers: {
+      Authorization: getLocalStorage(USER_TOKEN)
+    }
+  })
+}

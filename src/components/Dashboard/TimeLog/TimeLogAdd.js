@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
-import { addTimeLog } from 'actions/TimeLogActions'
+import { allCategories, addTimeLog } from 'actions/TimeLogActions'
 
 import { FORM_TIME_LOG } from 'constants/AppForms'
 
@@ -15,9 +15,23 @@ import { clearMessage } from 'actions'
 const AlertBox = React.lazy(() => import('components/Common/AlertBox'))
 
 class TimeLogAdd extends React.Component {
+  state = {
+    allCategories: []
+  }
   handleSubmit = async formFields => {
     const { addTimeLog } = this.props
     addTimeLog(formFields)
+  }
+
+  componentDidMount = async () => {
+    const { allCategories } = this.props
+    const categories = await allCategories()
+
+    if (categories.data) {
+      this.setState({
+        allCategories: categories.data
+      })
+    }
   }
 
   render() {
@@ -29,6 +43,7 @@ class TimeLogAdd extends React.Component {
       allowMessageClear,
       clearMessage
     } = this.props
+    const { allCategories } = this.state
     return (
       <>
         <Helmet>
@@ -40,6 +55,7 @@ class TimeLogAdd extends React.Component {
           ajaxProcessing={ajaxProcessing}
           formFields={formFields}
           formModel={FORM_TIME_LOG}
+          categories={allCategories}
         />
         <AlertBox
           alertText={apiResponse}
@@ -64,6 +80,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { addTimeLog, clearMessage }
+    { addTimeLog, clearMessage, allCategories }
   )(TimeLogAdd)
 )

@@ -1,4 +1,9 @@
-import { saveTimeLog, getTimeLog, timeLogDelete } from 'services/timeLog'
+import {
+  saveTimeLog,
+  getTimeLog,
+  timeLogDelete,
+  getCategories
+} from 'services/timeLog'
 
 import {
   errorHandler,
@@ -104,6 +109,10 @@ export const timeLogs = ({ offset, perPage }) => {
   }
 }
 
+/**
+ * Delete request
+ * @param {string} timeLogId
+ */
 export const deleteTimeLog = timeLogId => {
   return async dispatch => {
     try {
@@ -129,6 +138,36 @@ export const deleteTimeLog = timeLogId => {
         CSS_CLASS_SUCCESS,
         true
       )
+
+      return response.data
+    } catch (error) {
+      errorHandler(dispatch, error, true)
+      dispatch(setAjaxProcessing(false))
+      return []
+    }
+  }
+}
+
+/**
+ * Get all categories
+ * @param {object} - Filter options
+ */
+export const allCategories = () => {
+  return async dispatch => {
+    try {
+      dispatch(setAjaxProcessing(true))
+
+      /**
+       * Check whether user is already logged in or not
+       */
+      const isRedirecting = checkLoggedInAndRedirect(dispatch, false)
+      if (isRedirecting) {
+        return []
+      }
+
+      const response = await getCategories()
+
+      dispatch(setAjaxProcessing(false))
 
       return response.data
     } catch (error) {

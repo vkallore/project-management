@@ -1,11 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faListAlt,
-  faClock,
-  faTasks,
-  faCalendar
-} from '@fortawesome/free-solid-svg-icons'
+import { faClock, faTasks, faCalendar } from '@fortawesome/free-solid-svg-icons'
 
 import Input from 'components/FormElements/Input'
 import Button from 'components/FormElements/Button'
@@ -21,7 +16,13 @@ import {
 } from 'constants/AppForms'
 
 const TimeLogForm = props => {
-  const { formFields, handleSubmit, ajaxProcessing, formModel } = props
+  const {
+    formFields,
+    handleSubmit,
+    ajaxProcessing,
+    formModel,
+    categories
+  } = props
 
   const submitForm = event => {
     event.preventDefault()
@@ -32,16 +33,14 @@ const TimeLogForm = props => {
     <form onSubmit={submitForm}>
       <div className="field">
         <label>{FIELD_CATEGORY}:</label>
-        <p className="control has-icons-left">
-          <Input
-            type="text"
-            name="category"
-            placeholder={FIELD_CATEGORY}
-            formModel={formModel}
-            required={true}
-          />
-          <span className="icon is-small is-left">
-            <FontAwesomeIcon icon={faListAlt} />
+        <p className="control">
+          <span className="select">
+            <select name="category" formModel={formModel} required={true}>
+              <option>Select a {FIELD_CATEGORY}</option>
+              {categories.map(category => {
+                return <option key={category}>{category}</option>
+              })}
+            </select>
           </span>
         </p>
       </div>
