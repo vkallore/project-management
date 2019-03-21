@@ -27,7 +27,7 @@ export const login = ({ username, password }) => {
       /**
        * Check whether user is already logged in or not
        */
-      const isRedirecting = checkLoggedInAndRedirect(dispatch)
+      const isRedirecting = await checkLoggedInAndRedirect(dispatch)
       if (isRedirecting) {
         return []
       }
@@ -65,7 +65,7 @@ export const register = ({ username, password }) => {
       /**
        * Check whether user is already logged in or not
        */
-      const isRedirecting = checkLoggedInAndRedirect(dispatch)
+      const isRedirecting = await checkLoggedInAndRedirect(dispatch)
       if (isRedirecting) {
         return []
       }

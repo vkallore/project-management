@@ -270,27 +270,27 @@ export const checkAndSetLogin = async (
 /**
  * Check whether user is already logged in or not
  * @param {*} dispatch
- * @param {*} isAlreadyLoggedIn - Whether to check already logged in status or not
+ * @param {*} fromPublicRoute - Whether to check already logged in status or not
  * @return boolean
  */
-export const checkLoggedInAndRedirect = (
-  dispatch,
-  isAlreadyLoggedIn = true
-) => {
-  const isLoggedIn = checkAndSetLogin(dispatch, false, isAlreadyLoggedIn)
+export const checkLoggedInAndRedirect = (dispatch, fromPublicRoute = true) => {
+  const loggedInStatus = checkAndSetLogin(dispatch, false, fromPublicRoute)
   let message = ''
-  if (isAlreadyLoggedIn && isLoggedIn) {
-    message = LOGGED_IN_ALREADY
-  } else if (!isAlreadyLoggedIn && !isLoggedIn) {
-    message = LOGGED_IN_NOT
-  } else {
-    return false
-  }
-  errorHandler(dispatch, message)
-  setTimeout(() => {
-    window.location.href = window.location.origin
-  }, 3000)
-  return true
+  return loggedInStatus.then(isLoggedIn => {
+    if (fromPublicRoute && isLoggedIn) {
+      message = LOGGED_IN_ALREADY
+    } else if (!fromPublicRoute && !isLoggedIn) {
+      message = LOGGED_IN_NOT
+    } else {
+      return false
+    }
+
+    errorHandler(dispatch, message)
+    setTimeout(() => {
+      window.location.href = window.location.origin
+    }, 3000)
+    return true
+  })
 }
 
 /**

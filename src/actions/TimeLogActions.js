@@ -55,7 +55,7 @@ export const addTimeLog = ({
       /**
        * Check whether user is already logged in or not
        */
-      const isRedirecting = checkLoggedInAndRedirect(dispatch, false)
+      const isRedirecting = await checkLoggedInAndRedirect(dispatch, false)
       if (isRedirecting) {
         return []
       }
@@ -90,7 +90,7 @@ export const timeLogs = ({ offset, perPage }) => {
       /**
        * Check whether user is already logged in or not
        */
-      const isRedirecting = checkLoggedInAndRedirect(dispatch, false)
+      const isRedirecting = await checkLoggedInAndRedirect(dispatch, false)
       if (isRedirecting) {
         return []
       }
@@ -123,7 +123,7 @@ export const deleteTimeLog = timeLogId => {
       /**
        * Check whether user is already logged in or not
        */
-      const isRedirecting = checkLoggedInAndRedirect(dispatch, false)
+      const isRedirecting = await checkLoggedInAndRedirect(dispatch, false)
       if (isRedirecting) {
         return []
       }
@@ -160,7 +160,7 @@ export const allCategories = () => {
       /**
        * Check whether user is already logged in or not
        */
-      const isRedirecting = checkLoggedInAndRedirect(dispatch, false)
+      const isRedirecting = await checkLoggedInAndRedirect(dispatch, false)
       if (isRedirecting) {
         return []
       }

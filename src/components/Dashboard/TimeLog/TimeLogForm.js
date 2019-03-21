@@ -35,7 +35,11 @@ const TimeLogForm = props => {
         <label>{FIELD_CATEGORY}:</label>
         <p className="control">
           <span className="select">
-            <select name="category" formModel={formModel} required={true}>
+            <select
+              name="category"
+              //formModel={formModel}
+              required={true}
+            >
               <option>Select a {FIELD_CATEGORY}</option>
               {categories.map(category => {
                 return <option key={category}>{category}</option>
