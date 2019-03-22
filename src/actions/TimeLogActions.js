@@ -11,7 +11,8 @@ import {
   dispatchMessage,
   resetForm,
   setAjaxProcessing,
-  checkLoggedInStatus
+  checkLoggedInStatus,
+  setListingData
 } from 'actions'
 
 import { toISOString } from 'helpers'
@@ -22,6 +23,8 @@ import {
   TIME_LOG_DELETE_SUCCESS
 } from 'constants/AppMessage'
 import { FORM_TIME_LOG } from 'constants/AppForms'
+
+import { queryParse } from 'services'
 
 /**
  * Add Time log
@@ -82,7 +85,10 @@ export const addTimeLog = ({
   }
 }
 
-export const timeLogs = ({ offset, perPage }) => {
+/**
+ * Get time logs
+ */
+export const getTimeLogs = () => {
   return async dispatch => {
     try {
       dispatch(setAjaxProcessing(true))
@@ -95,12 +101,29 @@ export const timeLogs = ({ offset, perPage }) => {
         return []
       }
 
+      let { page } = queryParse()
+
+      const perPage = process.env.PER_PAGE || 10
+      const currentPage = parseInt(page === undefined || page < 1 ? 1 : page)
+      const offset = (currentPage - 1) * perPage
+
       const params = { offset, limit: perPage }
       const response = await getTimeLog(params)
 
       dispatch(setAjaxProcessing(false))
 
-      return response.data
+      const data = response.data || []
+
+      dispatch(
+        setListingData({
+          data: data.data,
+          totalRecords: data.totalRecords,
+          currentPage,
+          perPage
+        })
+      )
+
+      return []
     } catch (error) {
       errorHandler(dispatch, error, true)
       dispatch(setAjaxProcessing(false))
@@ -110,7 +133,7 @@ export const timeLogs = ({ offset, perPage }) => {
 }
 
 /**
- * Delete request
+ * Delete time log
  * @param {string} timeLogId
  */
 export const deleteTimeLog = timeLogId => {

@@ -8,7 +8,6 @@ import { ContentLoader } from 'components/Common/Loaders'
 import { clearMessage } from 'actions'
 
 const PublicRoute = ({ component: Component, ...props }) => {
-  console.log(props)
   return (
     <SiteLayout>
       <Suspense fallback={<ContentLoader />}>

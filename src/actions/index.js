@@ -1,5 +1,7 @@
 import { isTokenAlive, getFreshToken } from 'services/auth'
 
+import { queryParse, stringify } from 'services'
+
 import {
   SHOW_MODAL,
   HIDE_MODAL,
@@ -12,7 +14,10 @@ import {
   SHOW_MESSAGE,
   CSS_CLASS_DANGER,
   CLEAR_MESSAGE,
-  RESET_FORM
+  RESET_FORM,
+  LISTING_DATA_UPDATE,
+  PAGE_CHANGED,
+  RESET_LISTING_DATA
 } from 'constants/AppConstants'
 import {
   API_ERROR_404,
@@ -302,4 +307,49 @@ export const checkLoggedInStatus = async (
  */
 export const resetForm = form => {
   return { type: RESET_FORM, formType: form }
+}
+
+/**
+ * Set listing data in redux
+ */
+export const setListingData = listingData => {
+  return {
+    type: LISTING_DATA_UPDATE,
+    listingData: {
+      ...listingData,
+      totalPages: Math.ceil(listingData.totalRecords / listingData.perPage)
+    }
+  }
+}
+
+/**
+ * Do History push & update URL
+ */
+export const paginate = (page, history) => {
+  let query = queryParse()
+
+  let newQuery = {
+    ...query,
+    page: page
+  }
+
+  const queryString = stringify(newQuery)
+
+  history.push({ search: queryString })
+  return dispatch => {
+    dispatch({
+      type: PAGE_CHANGED
+    })
+  }
+}
+
+/**
+ * Reset the listing data on component unmount
+ */
+export const resetListingData = () => {
+  return dispatch => {
+    dispatch({
+      type: RESET_LISTING_DATA
+    })
+  }
 }

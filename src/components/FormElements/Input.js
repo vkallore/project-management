@@ -84,7 +84,6 @@ class Input extends React.Component {
       pattern,
       autoFocus
     } = this.props
-    console.log(autoFocus)
     let { className = '' } = this.props
     const inputValue =
       value === undefined

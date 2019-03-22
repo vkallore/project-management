@@ -7,57 +7,30 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import 'react-bulma-components/dist/react-bulma-components.min.css'
 
-import { timeLogs, deleteTimeLog } from 'actions/TimeLogActions'
+import { getTimeLogs, deleteTimeLog } from 'actions/TimeLogActions'
 
 import { TEXT_TIME_LOG, TITLE_TIME_LOG } from 'constants/AppLanguage'
-import { clearMessage } from 'actions'
+import { clearMessage, paginate, resetListingData } from 'actions'
 
 import { SvgLoader } from 'components/Common/Loaders'
-
-import { queryParse, stringify } from 'services'
 
 import { toLocaleString } from 'helpers'
 
 const AlertBox = React.lazy(() => import('components/Common/AlertBox'))
 
 class TimeLogList extends React.Component {
-  hasUnmount = false
   constructor(props) {
     super(props)
-    this.state = {
-      userTimeLogs: [],
-      totalRecords: 0,
-      perPage: 10,
-      currentPage: 0,
-      totalPages: 0
-    }
+
     this.getData = this.getData.bind(this)
     this.paginate = this.paginate.bind(this)
     this.deleteTimeLog = this.deleteTimeLog.bind(this)
   }
 
   getData = async () => {
-    const { timeLogs } = this.props
-    const { perPage } = this.state
+    const { getTimeLogs } = this.props
 
-    let { page } = queryParse()
-
-    const currentPage = parseInt(page === undefined || page < 1 ? 1 : page)
-
-    const offset = (currentPage - 1) * perPage
-
-    const userTimeLogResponse = await timeLogs({ offset, perPage })
-
-    const totalRecords = userTimeLogResponse.totalRecords || 0
-    /* Avoid setState after unmount */
-    if (this.hasUnmount !== true) {
-      this.setState({
-        userTimeLogs: userTimeLogResponse.data || [],
-        totalRecords: totalRecords,
-        currentPage: currentPage,
-        totalPages: Math.ceil(totalRecords / perPage)
-      })
-    }
+    await getTimeLogs()
   }
 
   deleteTimeLog = async timeLogId => {
@@ -69,21 +42,8 @@ class TimeLogList extends React.Component {
   }
 
   paginate(page) {
-    const { history } = this.props
-    let query = queryParse()
-
-    let newQuery = {
-      ...query,
-      page: page
-    }
-
-    const queryString = stringify(newQuery)
-
-    history.push({ search: queryString })
-
-    this.setState({
-      currentPage: page
-    })
+    const { history, paginate } = this.props
+    paginate(page, history)
   }
 
   componentDidMount() {
@@ -98,7 +58,8 @@ class TimeLogList extends React.Component {
   }
 
   componentWillUnmount() {
-    this.hasUnmount = true
+    const { resetListingData } = this.props
+    resetListingData()
   }
 
   render() {
@@ -111,14 +72,16 @@ class TimeLogList extends React.Component {
       apiResponse,
       apiResponseType,
       allowMessageClear,
-      clearMessage
+      clearMessage,
+      data,
+      currentPage,
+      totalPages,
+      perPage
     } = this.props
 
-    const { userTimeLogs, currentPage, totalPages, perPage } = this.state
-
     const htmlUserTimeLogs =
-      userTimeLogs.length > 0 ? (
-        userTimeLogs.map((userTimeLog, index) => {
+      data.length > 0 ? (
+        data.map((userTimeLog, index) => {
           return (
             <TimeLog
               key={userTimeLog.id}
@@ -211,12 +174,16 @@ const mapStateToProps = state => ({
   ajaxProcessing: state.common.ajaxProcessing,
   apiResponse: state.common.apiResponse,
   apiResponseType: state.common.apiResponseType,
-  allowMessageClear: state.common.allowMessageClear
+  allowMessageClear: state.common.allowMessageClear,
+  data: state.listing.data,
+  currentPage: state.listing.currentPage,
+  totalPages: state.listing.totalPages,
+  perPage: state.listing.perPage
 })
 
 export default withRouter(
   connect(
     mapStateToProps,
-    { timeLogs, clearMessage, deleteTimeLog }
+    { getTimeLogs, clearMessage, deleteTimeLog, paginate, resetListingData }
   )(TimeLogList)
 )

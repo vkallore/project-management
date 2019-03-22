@@ -24,3 +24,7 @@ export const VALID_PATTERN_PASSWORD =
 /* Dashboard Menu Items */
 export const MENU_LIST = 'List'
 export const MENU_ADD = 'Add'
+
+export const LISTING_DATA_UPDATE = 'LISTING_DATA_UPDATE'
+export const PAGE_CHANGED = 'PAGE_CHANGED'
+export const RESET_LISTING_DATA = 'RESET_LISTING_DATA'
