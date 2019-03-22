@@ -5,9 +5,9 @@ export const API_ERROR_404 =
 export const REGISTER_SUCCESS =
   'Your account has been created. Please activate and login.'
 export const LOGGED_IN_ALREADY =
-  'You are already logged in on another tab/window. Refreshing the page.'
+  'You are already logged in on another tab/window! Refresh the page.'
 export const LOGGED_IN_NOT =
-  'You are not logged in! Or your session timed out. Refreshing the page.'
+  'You are not logged in! Or your session timed out. Login again.'
 
 /* Dashboard */
 /* Time Log */

@@ -9,7 +9,6 @@ import LoginForm from 'components/Auth/LoginForm'
 
 import { FORM_LOGIN } from 'constants/AppForms'
 import { TITLE_LOGIN, TEXT_LOGIN } from 'constants/AppLanguage'
-import { setUserData } from 'actions'
 
 import { clearMessage } from 'actions'
 
@@ -17,21 +16,18 @@ const AlertBox = React.lazy(() => import('components/Common/AlertBox'))
 
 class LoginContainer extends React.Component {
   handleSubmit = async formFields => {
-    const { login, history } = this.props
-    const response = await login({
+    const { login } = this.props
+
+    await login({
       username: formFields.username,
       password: formFields.password
     })
-    if (response.token) {
-      setUserData(response)
-      history.push('/')
-    }
   }
 
   render() {
     const { loggedIn } = this.props
     if (loggedIn) {
-      return <Redirect to="/" />
+      return <Redirect to="/dashboard" />
     }
     const {
       ajaxProcessing,

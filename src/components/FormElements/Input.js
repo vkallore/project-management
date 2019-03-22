@@ -81,8 +81,10 @@ class Input extends React.Component {
       forms,
       min,
       max,
-      pattern
+      pattern,
+      autoFocus
     } = this.props
+    console.log(autoFocus)
     let { className = '' } = this.props
     const inputValue =
       value === undefined
@@ -105,6 +107,7 @@ class Input extends React.Component {
           onInvalid={this.setInValidMessage}
           onInput={this.clearInValidMessage}
           // Conditional attributes
+          autoFocus={autoFocus || false}
           {...(min ? { min: min } : null)}
           {...(max ? { max: max } : null)}
           {...(pattern ? { pattern: pattern } : null)}

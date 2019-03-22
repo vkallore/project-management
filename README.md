@@ -17,7 +17,7 @@ Create New Directory for PMT related config
 ```
 $ sudo mkdir /etc/nginx/pmt-config
 $ cd pmt-config
-$ touch pmt-proxy-forward.conf pmt-proxy-options.conf pmt-proxy-post.conf pmt-proxy-get.conf
+$ touch pmt-proxy-forward.conf pmt-proxy-options.conf pmt-proxy-post.conf pmt-proxy-get.conf pmt-proxy-put.conf pmt-proxy-delete.conf
 # and paste the content to it
 ```
 
@@ -84,6 +84,30 @@ if ($request_method = 'GET') {
 
 ```
 
+**pmt-proxy-put.conf**
+
+```
+
+if ($request_method = 'PUT') {
+  add_header Access-Control-Allow-Origin '*' always; #'always' can be used only if nginx >= 1.7.5
+  add_header Access-Control-Allow-Credentials 'true';
+  add_header Access-Control-Expose-Headers 'Content-Length,Content-Range';
+}
+
+```
+
+**pmt-proxy-delete.conf**
+
+```
+
+if ($request_method = 'DELETE') {
+  add_header Access-Control-Allow-Origin '*' always; #'always' can be used only if nginx >= 1.7.5
+  add_header Access-Control-Allow-Credentials 'true';
+  add_header Access-Control-Expose-Headers 'Content-Length,Content-Range';
+}
+
+```
+
 **website.conf**
 
 ```
@@ -110,6 +134,10 @@ server {
 
     include pmt-config/pmt-proxy-get.conf;
 
+    include pmt-config/pmt-proxy-put.conf;
+
+    include pmt-config/pmt-proxy-delete.conf;
+
     proxy_pass http://192.168.1.190:8000/;
   }
 
@@ -120,6 +148,10 @@ server {
     include pmt-config/pmt-proxy-post.conf;
 
     include pmt-config/pmt-proxy-get.conf;
+
+    include pmt-config/pmt-proxy-put.conf;
+
+    include pmt-config/pmt-proxy-delete.conf;
 
     proxy_pass http://192.168.1.190:8001/;
   }

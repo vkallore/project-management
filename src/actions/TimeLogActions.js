@@ -11,7 +11,7 @@ import {
   dispatchMessage,
   resetForm,
   setAjaxProcessing,
-  checkLoggedInAndRedirect
+  checkLoggedInStatus
 } from 'actions'
 
 import { toISOString } from 'helpers'
@@ -55,8 +55,8 @@ export const addTimeLog = ({
       /**
        * Check whether user is already logged in or not
        */
-      const isRedirecting = await checkLoggedInAndRedirect(dispatch, false)
-      if (isRedirecting) {
+      const statusIsLoggedIn = await checkLoggedInStatus(dispatch)
+      if (!statusIsLoggedIn) {
         return []
       }
 
@@ -90,8 +90,8 @@ export const timeLogs = ({ offset, perPage }) => {
       /**
        * Check whether user is already logged in or not
        */
-      const isRedirecting = await checkLoggedInAndRedirect(dispatch, false)
-      if (isRedirecting) {
+      const statusIsLoggedIn = await checkLoggedInStatus(dispatch)
+      if (!statusIsLoggedIn) {
         return []
       }
 
@@ -123,8 +123,8 @@ export const deleteTimeLog = timeLogId => {
       /**
        * Check whether user is already logged in or not
        */
-      const isRedirecting = await checkLoggedInAndRedirect(dispatch, false)
-      if (isRedirecting) {
+      const statusIsLoggedIn = await checkLoggedInStatus(dispatch)
+      if (!statusIsLoggedIn) {
         return []
       }
 
@@ -160,8 +160,9 @@ export const allCategories = () => {
       /**
        * Check whether user is already logged in or not
        */
-      const isRedirecting = await checkLoggedInAndRedirect(dispatch, false)
-      if (isRedirecting) {
+      const statusIsLoggedIn = await checkLoggedInStatus(dispatch)
+
+      if (!statusIsLoggedIn) {
         return []
       }
 

@@ -6,7 +6,7 @@ import TopNavBar from 'components/Common/TopNavBar'
 const DashboardNavItems = () => (
   <TopNavBar>
     <div className="navbar-start">
-      <Link className="navbar-item" to="/" title={TEXT_DASHBOARD}>
+      <Link className="navbar-item" to="/dashboard" title={TEXT_DASHBOARD}>
         {TEXT_DASHBOARD}
       </Link>
     </div>

@@ -8,7 +8,7 @@ import {
   setUserData,
   resetForm,
   setAjaxProcessing,
-  checkLoggedInAndRedirect,
+  checkLoggedInStatus,
   setLoggedIn
 } from 'actions'
 import { doLogin, doRegister } from 'services/auth'
@@ -27,17 +27,21 @@ export const login = ({ username, password }) => {
       /**
        * Check whether user is already logged in or not
        */
-      const isRedirecting = await checkLoggedInAndRedirect(dispatch)
-      if (isRedirecting) {
+      const statusIsLoggedIn = await checkLoggedInStatus(dispatch, false)
+      if (statusIsLoggedIn) {
         return []
       }
 
-      const response = await doLogin({ username, password })
+      const { data: userData } = await doLogin({ username, password })
+
+      if (userData.token) {
+        setUserData(userData)
+      }
 
       dispatch(resetForm(FORM_LOGIN))
       dispatch(setLoggedIn(true))
       dispatch(setAjaxProcessing(false))
-      return response.data
+      return userData
     } catch (error) {
       errorHandler(dispatch, error, true)
       dispatch(setAjaxProcessing(false))
@@ -65,8 +69,8 @@ export const register = ({ username, password }) => {
       /**
        * Check whether user is already logged in or not
        */
-      const isRedirecting = await checkLoggedInAndRedirect(dispatch)
-      if (isRedirecting) {
+      const statusIsLoggedIn = await checkLoggedInStatus(dispatch, false)
+      if (statusIsLoggedIn) {
         return []
       }
 

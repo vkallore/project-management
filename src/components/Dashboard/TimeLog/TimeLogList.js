@@ -21,6 +21,7 @@ import { toLocaleString } from 'helpers'
 const AlertBox = React.lazy(() => import('components/Common/AlertBox'))
 
 class TimeLogList extends React.Component {
+  hasUnmount = false
   constructor(props) {
     super(props)
     this.state = {
@@ -48,13 +49,15 @@ class TimeLogList extends React.Component {
     const userTimeLogResponse = await timeLogs({ offset, perPage })
 
     const totalRecords = userTimeLogResponse.totalRecords || 0
-
-    this.setState({
-      userTimeLogs: userTimeLogResponse.data || [],
-      totalRecords: totalRecords,
-      currentPage: currentPage,
-      totalPages: Math.ceil(totalRecords / perPage)
-    })
+    /* Avoid setState after unmount */
+    if (this.hasUnmount !== true) {
+      this.setState({
+        userTimeLogs: userTimeLogResponse.data || [],
+        totalRecords: totalRecords,
+        currentPage: currentPage,
+        totalPages: Math.ceil(totalRecords / perPage)
+      })
+    }
   }
 
   deleteTimeLog = async timeLogId => {
@@ -92,6 +95,10 @@ class TimeLogList extends React.Component {
     if (prevProps.location.search !== location.search) {
       this.getData()
     }
+  }
+
+  componentWillUnmount() {
+    this.hasUnmount = true
   }
 
   render() {

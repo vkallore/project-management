@@ -238,7 +238,8 @@ export const checkAndSetLogin = async (
   checkTokenIsAlive = false
 ) => {
   let isLoggedIn = false
-  const userToken = getLocalStorage(USER_TOKEN)
+  const userToken = await getLocalStorage(USER_TOKEN)
+
   if (userToken !== null) {
     try {
       if (checkTokenIsAlive === true) {
@@ -259,10 +260,10 @@ export const checkAndSetLogin = async (
         console.log(err)
       }
     }
+  }
 
-    if (setAsLoggedIn === true) {
-      dispatch(setLoggedIn(isLoggedIn))
-    }
+  if (setAsLoggedIn === true) {
+    dispatch(setLoggedIn(isLoggedIn))
   }
   return isLoggedIn
 }
@@ -270,27 +271,29 @@ export const checkAndSetLogin = async (
 /**
  * Check whether user is already logged in or not
  * @param {*} dispatch
- * @param {*} fromPublicRoute - Whether to check already logged in status or not
- * @return boolean
+ * @param {*} fromProtectectedRoute - Whether to check already logged in status or not
+ * @return boolean - True if token exists
  */
-export const checkLoggedInAndRedirect = (dispatch, fromPublicRoute = true) => {
-  const loggedInStatus = checkAndSetLogin(dispatch, false, fromPublicRoute)
+export const checkLoggedInStatus = async (
+  dispatch,
+  fromProtectectedRoute = true
+) => {
+  const isLoggedIn = await checkAndSetLogin(
+    dispatch,
+    true,
+    fromProtectectedRoute
+  )
   let message = ''
-  return loggedInStatus.then(isLoggedIn => {
-    if (fromPublicRoute && isLoggedIn) {
-      message = LOGGED_IN_ALREADY
-    } else if (!fromPublicRoute && !isLoggedIn) {
-      message = LOGGED_IN_NOT
-    } else {
-      return false
-    }
-
-    errorHandler(dispatch, message)
-    setTimeout(() => {
-      window.location.href = window.location.origin
-    }, 3000)
-    return true
-  })
+  if (!fromProtectectedRoute && isLoggedIn) {
+    message = LOGGED_IN_ALREADY
+  } else if (fromProtectectedRoute && !isLoggedIn) {
+    message = LOGGED_IN_NOT
+  } else {
+    return isLoggedIn
+  }
+  errorHandler(dispatch, message, true)
+  dispatch(setAjaxProcessing(false))
+  return false
 }
 
 /**

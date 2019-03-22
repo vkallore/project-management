@@ -38,6 +38,7 @@ const LoginForm = props => {
             placeholder={FIELD_USERNAME}
             formModel={formModel}
             required={true}
+            autoFocus
           />
           <span className="icon is-small is-left">
             <FontAwesomeIcon icon={faEnvelope} />

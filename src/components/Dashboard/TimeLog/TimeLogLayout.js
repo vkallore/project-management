@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
@@ -15,7 +16,10 @@ const TimeLogEdit = React.lazy(() =>
 )
 
 const TimeLogLayout = props => {
-  const { match } = props
+  const { match, loggedIn } = props
+  if (!loggedIn) {
+    return null
+  }
   return (
     <>
       <Helmet>
@@ -37,4 +41,8 @@ const TimeLogLayout = props => {
   )
 }
 
-export default TimeLogLayout
+const mapStateToProps = state => ({
+  loggedIn: state.common.loggedIn
+})
+
+export default connect(mapStateToProps)(TimeLogLayout)

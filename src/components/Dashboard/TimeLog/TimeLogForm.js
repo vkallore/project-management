@@ -57,6 +57,7 @@ const TimeLogForm = props => {
             placeholder={FIELD_START_DATE}
             formModel={formModel}
             required={true}
+            autoFocus
           />
           <span className="icon is-small is-left">
             <FontAwesomeIcon icon={faCalendar} />
