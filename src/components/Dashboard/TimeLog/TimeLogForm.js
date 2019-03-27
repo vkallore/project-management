@@ -42,7 +42,11 @@ const TimeLogForm = props => {
             >
               <option>Select a {FIELD_CATEGORY}</option>
               {categories.map(category => {
-                return <option key={category}>{category}</option>
+                return (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                )
               })}
             </select>
           </span>

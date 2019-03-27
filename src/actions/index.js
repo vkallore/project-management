@@ -26,6 +26,8 @@ import {
   LOGGED_IN_NOT
 } from 'constants/AppMessage'
 
+const perPage = process.env.PER_PAGE || 10
+
 /**
  * Common error hander for API calls
  * @param {*} error
@@ -317,7 +319,10 @@ export const setListingData = listingData => {
     type: LISTING_DATA_UPDATE,
     listingData: {
       ...listingData,
-      totalPages: Math.ceil(listingData.totalRecords / listingData.perPage)
+      currentPage: getCurrentPage(),
+      totalPages: Math.ceil(
+        listingData.totalRecords / (listingData.perPage || perPage)
+      )
     }
   }
 }
@@ -352,4 +357,20 @@ export const resetListingData = () => {
       type: RESET_LISTING_DATA
     })
   }
+}
+
+export const getCurrentPage = () => {
+  let { page } = queryParse()
+
+  return parseInt(page === undefined || page < 1 ? 1 : page)
+}
+
+export const buildApiParams = () => {
+  let { page, ...query } = queryParse()
+
+  const currentPage = getCurrentPage()
+
+  const offset = (currentPage - 1) * perPage
+
+  return { offset, limit: perPage, ...query }
 }

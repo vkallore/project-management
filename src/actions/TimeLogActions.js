@@ -12,7 +12,8 @@ import {
   resetForm,
   setAjaxProcessing,
   checkLoggedInStatus,
-  setListingData
+  setListingData,
+  buildApiParams
 } from 'actions'
 
 import { toISOString } from 'helpers'
@@ -24,7 +25,7 @@ import {
 } from 'constants/AppMessage'
 import { FORM_TIME_LOG } from 'constants/AppForms'
 
-import { queryParse } from 'services'
+const perPage = process.env.PER_PAGE || 10
 
 /**
  * Add Time log
@@ -101,13 +102,8 @@ export const getTimeLogs = () => {
         return []
       }
 
-      let { page } = queryParse()
+      const params = buildApiParams()
 
-      const perPage = process.env.PER_PAGE || 10
-      const currentPage = parseInt(page === undefined || page < 1 ? 1 : page)
-      const offset = (currentPage - 1) * perPage
-
-      const params = { offset, limit: perPage }
       const response = await getTimeLog(params)
 
       dispatch(setAjaxProcessing(false))
@@ -118,7 +114,6 @@ export const getTimeLogs = () => {
         setListingData({
           data: data.data,
           totalRecords: data.totalRecords,
-          currentPage,
           perPage
         })
       )
