@@ -16,8 +16,8 @@ Create New Directory for PMT related config
 
 ```
 $ sudo mkdir /etc/nginx/pmt-config
-$ cd pmt-config
-$ touch pmt-proxy-forward.conf pmt-proxy-options.conf pmt-proxy-post.conf pmt-proxy-get.conf pmt-proxy-put.conf pmt-proxy-delete.conf
+$ cd /etc/nginx/pmt-config
+$ sudo touch pmt-proxy-forward.conf pmt-proxy-options.conf pmt-proxy-post.conf pmt-proxy-get.conf pmt-proxy-put.conf pmt-proxy-delete.conf
 # and paste the content to it
 ```
 
